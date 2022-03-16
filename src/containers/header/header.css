@@ -1,0 +1,72 @@
+.gpt3__header {
+    display: flex;
+}
+
+.gpt3__header-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin: 5rem;
+}
+
+.gpt3__header-content h1 {
+    font-family: var(--font-family);
+    font-weight: 800;
+    
+    font-size: 62px;
+    line-height: 75px;
+    letter-spacing: -0.04em;
+}
+
+.gpt3__header-image {
+    align-items: right;
+}
+
+.craft-classes imgOn {
+    height: 120px;
+    margin-left: 2rem;
+
+    background-color: rgb(94, 94, 94);
+    border-color: rgb(179, 29, 29);
+    border-radius: 16px;
+    border-width: medium;
+    border-style: solid;
+}
+
+.craft-classes img {
+    height: 120px;
+    margin-left: 2rem;
+
+    border-color: rgb(54, 54, 54);
+    border-radius: 16px;
+    border-width: medium;
+    border-style: solid;
+    cursor: pointer;
+}
+
+.craft-classes-selected {
+    height: 120px;
+    margin-left: 2rem;
+
+    background-color: rgb(255, 253, 130);
+    border-color: rgb(54, 54, 54);
+    border-radius: 16px;
+    border-width: medium;
+    border-style: solid;
+    cursor: pointer;
+}
+
+.craft-classes-unselected {
+    height: 120px;
+    margin-left: 2rem;
+
+    background-color: rgb(119, 119, 119);
+    border-color: rgb(54, 54, 54);
+    border-radius: 16px;
+    border-width: medium;
+    border-style: solid;
+    cursor: pointer;
+}
