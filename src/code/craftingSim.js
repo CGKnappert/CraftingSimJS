@@ -1,5 +1,3 @@
-import { act } from 'react-dom/test-utils';
-
 class Action {
     constructor(name, durability, progressEfficiency, qualityEfficiency, CP, comboAction, comboBonus, specialist, successRate, buff, steps) {
         this.name = name;
@@ -38,7 +36,7 @@ class Recipe {
         let recipeJSON = jsonString;
 
         for (var recipe of recipeJSON) {
-            if(recipe["Name"] == name) {
+            if(recipe["Name"] === name) {
                 console.log("Found: " + name)
                 this.name = name;
                 this.durability = recipe["RecipeLevelTable"]["Durability"];
@@ -117,16 +115,15 @@ class CrafterSim {
         this.progress = 0;
         this.quality = startingQuality;
         // Recipe properties
-        let currRecipe = new Recipe(this.recipeName);
-        this.recipeDurability = currRecipe.durability;
-        this.difficulty = currRecipe.difficulty;
-        this.recipeQuality = currRecipe.quality;
-        this.rlvl = currRecipe.rlvl;
+        this.recipeDurability = 0;
+        this.difficulty = 0;
+        this.recipeQuality = 0;
+        this.rlvl = 1;
         this.master = false;
-        this.progressModifier = currRecipe.progressModifier;
-        this.progressDivider = currRecipe.progressDivider;
-        this.qualityModifier = currRecipe.qualityModifier;
-        this.qualityDivider = currRecipe.qualityDivider;
+        this.progressModifier = 1;
+        this.progressDivider = 1;
+        this.qualityModifier = 1;
+        this.qualityDivider = 1;
 
     }
 
@@ -178,9 +175,6 @@ class CrafterSim {
     get difficulty() { return this._difficulty }
     set difficulty(value) { this._difficulty = value }
 
-    get quality() { return this._quality }
-    set quality(value) { this._quality = value }
-
     get rlvl() { return this._rlvl }
     set rlvl(value) { this._rlvl = value }
 
@@ -199,25 +193,59 @@ class CrafterSim {
     get qualityDivider() { return this._qualityDivider }
     set qualityDivider(value) { this._qualityDivider = value }
 
+    updateCrafterCraftsmanshipStat(craftsmanship) {
+        console.log("sim Cr: " + craftsmanship)
+        this.craftsmanship = craftsmanship;
+    }
+
+    updateCrafterControlStat(control) {
+        this.control = control;
+    }
+
+    updateCrafterCPStat(CP) {
+        this.maxCP = CP;
+    }
+
+    updateCrafterClvlStat(clvl) {
+        this.clvl = clvl;
+    }
+
+    updateCrafterSpecialistStat(specialist) {
+        this.specialist = specialist;
+    }
+
+    updateCrafterStats(craftsmanship, control, CP, clvl, specialist) {
+        console.log(craftsmanship);
+        console.log(control);
+        console.log(CP);
+        this.craftsmanship = craftsmanship;
+        this.control = control;
+        this.maxCP = CP;
+        this.clvl = clvl;
+        this.specialist = specialist;
+    }
+
     setRecipe(newRecipe) {
         // Set recipe name
         this.recipeName = newRecipe;
         // Get recipe and set class properties
         let currRecipe = new Recipe(this.recipeName);
-        this.recipeDurability = currRecipe.durability;
-        this.difficulty = currRecipe.difficulty;
-        this.recipeQuality = currRecipe.quality;
-        this.rlvl = currRecipe.rlvl;
-        this.master = false;
-        this.progressModifier = currRecipe.progressModifier;
-        this.progressDivider = currRecipe.progressDivider;
-        this.qualityModifier = currRecipe.qualityModifier;
-        this.qualityDivider = currRecipe.qualityDivider;
-        // Reset craft instance properties
-        this.CP = this.MaxCP;
-        this.durability = 0;
-        this.progress = 0;
-        this.quality = this.startingQuality;
+        if (currRecipe.name !== "") {
+            this.recipeDurability = currRecipe.durability;
+            this.difficulty = currRecipe.difficulty;
+            this.recipeQuality = currRecipe.quality;
+            this.rlvl = currRecipe.rlvl;
+            this.master = false;
+            this.progressModifier = currRecipe.progressModifier;
+            this.progressDivider = currRecipe.progressDivider;
+            this.qualityModifier = currRecipe.qualityModifier;
+            this.qualityDivider = currRecipe.qualityDivider;
+            // Reset craft instance properties
+            this.CP = this.MaxCP;
+            this.durability = 0;
+            this.progress = 0;
+            this.quality = this.startingQuality;
+        }
     }
 
     loadActions() {        
@@ -273,7 +301,7 @@ class CrafterSim {
             //success rate = 100% unless otherwise stated
             let successRate =  (description.search(/Success Rate/) < 0 ? 100: description.substring(description.search(/Success Rate/).length, description.length).match(/\d{2,3}/i)[0]);
 
-            let buff = (action["ActionCategory"] != undefined);
+            let buff = (action["ActionCategory"] !== undefined && action["ActionCategory"] !== null);
 
             let steps = 0;
             if (description.search("steps") && description.substring(description.search("steps")-20, description.search("steps")).search("three") >= 0) { 
@@ -312,7 +340,7 @@ class CrafterSim {
 
         let qualityMultiplier = 1.0;
         if (this.activeBuffs["Innovation"] > 0 && actionType.qualityEfficiency > 0) qualityMultiplier = qualityMultiplier + .5;
-        if (actionType.name == "Byregot's Blessing" &&  this.activeBuffs["Inner Quiet"] > 0) actionType.qualityEfficiency = 100 + (20 * this.activeBuffs["Inner Quiet"]);
+        if (actionType.name === "Byregot's Blessing" &&  this.activeBuffs["Inner Quiet"] > 0) actionType.qualityEfficiency = 100 + (20 * this.activeBuffs["Inner Quiet"]);
 
         // Set consts to temp vars so they can be adjusted based on conditions and combos
         let conditonMultiplier = 1.0
@@ -339,7 +367,7 @@ class CrafterSim {
         }
         
         //if combo action was prior action and combo bonus is changing CP cost 
-        if (actionType.comboAction == prevAction && actionType.comboBonus.search(/CP cost/)) {
+        if (actionType.comboAction === prevAction && actionType.comboBonus.search(/CP cost/)) {
             CPCost = actionType.comboBonus.match(/\d{2}/i)[0]
         }
         
@@ -359,8 +387,8 @@ class CrafterSim {
         }
         //TODO: Else for underleveled
 
-        // decrease curability while considering waste not
-        if ((this.activeBuffs["Waste Not"] == undefined && this.activeBuffs["Waste Not II"] == undefined)) {
+        // decrease durability while considering waste not
+        if ((this.activeBuffs["Waste Not"] === undefined && this.activeBuffs["Waste Not II"] === undefined)) {
              this.durability -= Math.floor(actionType.durability); 
         }
         else { 
@@ -371,12 +399,12 @@ class CrafterSim {
         this.CP -= ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2));
 
         //Remove any buffs consumed this step
-        if (action.search("Byregot's") >= 0) this.activeBuffs["Inner Quiet"] = 0;
+        if (action.search("Byregot's") >= 0) delete this.activeBuffs["Inner Quiet"];
         if (action.search("Synthesis") >= 0) this.activeBuffs["Final Appraisal"] = 0;
         if (actionType.progressEfficiency > 0 && actionType.name !== "Muscle Memory" && this.activeBuffs["Muscle Memory"] > 0) this.activeBuffs["Muscle Memory"] = 0;
 
         //Decrement buff step count
-        for (const [buff, value] of Object.entries(this.activeBuffs)) {
+        for (const [buff] of Object.entries(this.activeBuffs)) {
             if (buff !== "Inner Quiet" && this.activeBuffs[buff] >= 0) {
                 this.activeBuffs[buff] = this.activeBuffs[buff] - 1;
                 if (this.activeBuffs[buff] <= 0) delete this.activeBuffs[buff];
@@ -390,14 +418,14 @@ class CrafterSim {
         if (this.durability > this.recipeDurability) this.durability = this.recipeDurability;
 
         //Add any new buffs executed this step
-        if (this.actionDict[action].buff && this.activeBuffs[action] !== undefined || action == "Muscle Memory") this.activeBuffs[action] = actionType.steps;
+        if (this.actionDict[action].buff && (this.activeBuffs[action] !== undefined || action === "Muscle Memory")) this.activeBuffs[action] = actionType.steps;
         else if (this.actionDict[action].buff) this.activeBuffs[action] = actionType.steps;
 
         //Increment Inner Quiet
-        if ((action.search("Touch") || actionType.name == "Reflect") >= 0 && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
+        if ((action.search("Touch") || actionType.name === "Reflect") >= 0 && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
         else if (action.search("Touch") >= 0) this.activeBuffs["Inner Quiet"] = 1;
-        if ((actionType.name == "Preparatory Touch" || actionType.name == "Reflect") && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
-        if (actionType.name == "Precise Touch" && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
+        if ((actionType.name === "Preparatory Touch" || actionType.name === "Reflect") && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
+        if (actionType.name === "Precise Touch" && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
         if (this.activeBuffs["Inner Quiet"] >= 0 && this.activeBuffs["Inner Quiet"] > 10) this.activeBuffs["Inner Quiet"] = 10; //Cap Inner Quiet at 10
 
         // this.printStatus(action, condition);
@@ -448,7 +476,7 @@ class CrafterSim {
     }
 
     reformatMacro(macro) {
-        return macro.replaceAll(/\/echo[^\n]+/g, '').replaceAll(/"*[\t\r\v\f ]*<[^>]+>[\t\r\v\f ]*/g, '').replaceAll(/\/ac\s+/g, '').replaceAll(/"\s*/g, '').split(/[\r\n]+/).filter((val) => val != "");
+        return macro.replaceAll(/\/echo[^\n]+/g, '').replaceAll(/"*[\t\r\v\f ]*<[^>]+>[\t\r\v\f ]*/g, '').replaceAll(/\/ac\s+/g, '').replaceAll(/"\s*/g, '').split(/[\r\n]+/).filter((val) => val !== "");
     }
 
     printStatus(action, condition) {
@@ -465,23 +493,3 @@ class CrafterSim {
 }
 
 export default CrafterSim
-
-// let macro = `/ac "Muscle Memory" <wait.3>
-// /ac Manipulation <wait.2>
-// /ac "Waste Not II" <wait.2>
-// /ac Groundwork <wait.3>
-// /ac "Preparatory Touch" <wait.3>
-// /ac "Preparatory Touch" <wait.3>
-// /ac Innovation <wait.2>  
-// /ac "Preparatory Touch" <wait.3>
-// /ac "Preparatory Touch" <wait.3>
-// /ac "Preparatory Touch" <wait.3>
-// /ac "Byregot's Blessing" <wait.3>
-// /ac Groundwork <wait.3>
-// /ac "Careful Synthesis" <wait.3>
-// /echo Craft finished <se.1>`
-
-// const sim = new CrafterSim("Cunning Craftsman's Draught", 0, 3320, 3373, 500, 90, 0);
-// sim.loadActions();
-
-// sim.executeMacro(sim.reformatMacro(macro), false, false);

@@ -1,0 +1,52 @@
+.stickysim__header_container {
+    /* display: flex; */
+}
+
+.stickysim__header-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin: 5rem;
+}
+
+.stickysim__header-content h1 {
+    font-family: var(--font-family);
+    font-weight: 800;
+    
+    font-size: 50px;
+    line-height: 75px;
+    letter-spacing: -0.04em;
+}
+
+.stickysim__header-image {
+    align-items: right;
+}
+
+.stickysim__craft-classes {
+    display: flex;
+    justify-content: center;
+}
+
+.stickysim__craft-classes img {
+    height: 120px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    align-self: center;
+
+    border-color: rgb(0, 0, 0);
+    border-radius: 16px;
+    border-width: medium;
+    border-style: solid;
+    cursor: pointer;
+}
+
+.craft-classes-selected {
+    background-image: linear-gradient(147deg, rgba(56, 243, 255, 1) 10%, rgba(0, 0, 0, 1) 50%, rgba(251, 63, 255, 1) 90%);
+}
+
+.craft-classes-unselected {
+    background-color: rgb(97, 97, 97);
+}

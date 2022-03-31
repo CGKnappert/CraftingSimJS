@@ -1,52 +1,80 @@
-import React, { useState } from 'react';
-import { RiMenu3Line, RiCloseLine } from 'react-icons/ri'
-import logo from '../../assets/Bunny Head.png'
+import React, { Component } from 'react';
+import CrafterSim from '../../code/craftingSim.js'
+import bunnyLogo from '../../assets/Bunny Head.png'
 import './navbar.css';
+import { BrowserRouter as Router, Route, NavLink, Routes, Link } from 'react-router-dom'
+import { CraftStats, CraftSolver } from '../../containers';
+import { CraftingSimulatorPage } from '../../pages';
 
-const Menu = () => (
-  <>
-  <p><a href="#simulater">Simulator</a></p>
-  <p><a href="#statistics">Statistics</a></p>
-  <p><a href="#solver">Solver</a></p>
-  </>
-)
 
-const Navbar = () => {
-  const [toggleMenu, setToggleMenu] = useState(false);
+class Navbar extends Component {
+  constructor(props) {
+    super(props);
+    let tempSim = new CrafterSim("", 0, 2000, 2000, 500, 90, 0);
+    tempSim.loadActions();
+    this.state = {
+      recipe: "",
+      macro: [],
+      mainSim: tempSim
+    };
+  }
+
+  setRecipe = (value) => {
+      let tempVaue = value;
+      this.setState( {recipe: tempVaue} );
+      console.log("Navbar: " + tempVaue);
+    
+      // try {
+      //     await Asyncstorage.setItem('recipe', tempVaue);
+      // }
+      // catch (err) {
+      //     console.log("setRecipe: " + err);
+      // }
+  }
+
+  setMacro = (value) => {
+      let tempVaue = value;
+      this.setState( {macro: tempVaue} );
+      console.log("Navbar: " + tempVaue);
+    
+      // try {
+      //     await Asyncstorage.setItem('recipe', tempVaue);
+      // }
+      // catch (err) {
+      //     console.log("setRecipe: " + err);
+      // }
+  }
+
   
-  return (
-    <div className="gpt3__navbar">
-      <div className="gpt3__navbar-links">
-        <div className="gpt3__navbar-links_logo">
-          <img src={logo} alt="logo" />
-        </div>
-        <div className="gpt3__navbar-links_container">
-          <Menu />
-        </div>
-      </div>
-
-      <div className='gpt3__navbar-sign'>
-        <p>Sign In</p>
-        <button type="button">Sign Up</button>
-      </div>
-      <div className="gpt3__navbar-menu">
-        {toggleMenu
-          ? <RiCloseLine color="#fff" size={27} onClick={() => setToggleMenu(false)} />
-          : <RiMenu3Line color="#fff" size={27} onClick={() => setToggleMenu(true)} />}
-        {toggleMenu && (
-        <div className="gpt3__navbar-menu_container scale-up-center">
-          <div className="gpt3__navbar-menu_container-links">
-            <Menu />
+  render() {
+    return (
+      <Router>
+      <div className="stickysim__navbar">
+        <div className="stickysim__navbar-links">
+          <div className="stickysim__navbar-links_logo">
+              <NavLink to="/" src={bunnyLogo} alt="bunnyLogo"></NavLink>
           </div>
-          <div className="gpt3__navbar-menu_container-links-sign">
-            <p>Sign in</p>
-            <button type="button">Sign up</button>
+              <nav>
+          <div className="stickysim__navbar-links_container">
+	  		        <div className="stickysim__navbar-links_items"><Link to="/">Simulator</Link></div>
+	  		        <div className="stickysim__navbar-links_items"><Link to="/statistics">Statistics</Link></div>
+	  		        <div className="stickysim__navbar-links_items"><Link to="/solver">Solver</Link></div>
+          </div>
+              </nav>
+          <div className='stickysim__navbar-sign'>
           </div>
         </div>
-        )}
       </div>
-    </div>
-  )
+      <div className="stickysim-body">
+      <Routes>
+          <Route exact path="/" element={<CraftingSimulatorPage setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
+          <Route path="/statistics" element={<CraftStats setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
+          <Route path="/solver" element={<CraftSolver />} />
+      </Routes>
+      </div>
+      </Router>
+    )
+  }
 }
 
 export default Navbar

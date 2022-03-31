@@ -1,0 +1,1 @@
+export { default as CraftingSimulatorPage } from './craftingsimulatorpage/craftingsimulatorpage'

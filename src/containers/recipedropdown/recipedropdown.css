@@ -30,7 +30,7 @@ body {
 .recipe-dropdown .recipe-dropdown-button {
     padding: 10px 15px;
     margin: 20px 20px 20px  0px;
-    width: 300px;
+    width: 400px;
     height: 40px;
     background: #fff;
     box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
@@ -57,25 +57,31 @@ body {
     font-size: small;
     font-weight: bold;
     color: #333;
-    width: 295px;
+    width: 395px;
     max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
     line-height: 1.5rem;
+    z-index: 3;
 }
 
-.recipe-dropdown .recipe-dropdown-content .recipe-dropdown-item {
+.recipe-dropdown .recipe-dropdown-content .recipe-dropdown-name {
     padding: 8px 0px;
     cursor: pointer;
     transition: all .2s;
 }
 
-.recipe-dropdown .recipe-dropdown-content .recipe-dropdown-item:hover {
+.recipe-dropdown .recipe-dropdown-content .recipe-dropdown-name:hover {
     background: #d8d8d8;
 }
 
+.recipe-dropdown .recipe-dropdown-content .recipe-dropdown-level {
+    margin: -25px 0px 0px 80%;
+    position: absolute;
+}
 
-.recipe-dropdown .recipe-dropdown-content .recipe-icon {
+
+.recipe-dropdown .recipe-dropdown-content .recipe-dropdown-icon {
     width: 35px;
     height: 35px;
     margin: -12px -5px;
