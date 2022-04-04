@@ -49,8 +49,8 @@ class CraftingSimulatorPage extends Component {
     render() {
         return (
             <div>
-                <RecipeSelector setRecipeFunction={ this.props.setRecipeFunction } currRecipe={ this.props.currRecipe } />
-                <CraftingSim setMacroFunction={ this.props.setMacroFunction } currRecipe={ this.props.currRecipe } currMacro={ this.props.currMacro } craftSim={ this.props.craftSim } />
+                <RecipeSelector setRecipeFunction={ this.props.setRecipeFunction }  />
+                <CraftingSim setMacroFunction={ this.props.setMacroFunction }  currMacro={ this.props.currMacro } craftSim={ this.props.craftSim } />
             </div>
         )
     }

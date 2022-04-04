@@ -1,35 +1,35 @@
-import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
+import React, { Component, useState, useReducer } from 'react';
 import { Navbar } from './components';
-// import { CraftingSim, CraftStats, Footer, Header } from './containers';
-// import { CraftingSimulatorPage } from './pages';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './App.css';
+// import { createStore } from 'redux';
+// import { Provider } from 'react-redux'
 
-class App extends Component {
-  constructor(props) {
-      super(props);
+// import SimState from './context/SimState'
+
+
+function App() {
+
+  // constructor(props) {
+  //     super(props);
       
-      this.state = { 
-        recipe: ""
-      }
-  }
+  //     this.state = { 
+  //       recipe: ""
+  //     }
+  // }
 
-  setRecipe = (value) => {
-    let tempVaue = value;
-    this.setState( {recipe: tempVaue} )
-    console.log("App.js: " + tempVaue);
-  }
+  // setRecipe = (value) => {
+  //   let tempVaue = value;
+  //   this.setState( {recipe: tempVaue} )
+  //   console.log("App.js: " + tempVaue);
+  // }
 
-render() {
   return (
     <div className="App">
-        <div className="gradient__bg">
+      <div className="gradient__bg">
           <Navbar />
-        </div>
+      </div>
     </div>
     )
-  }
 }
 
 export default App

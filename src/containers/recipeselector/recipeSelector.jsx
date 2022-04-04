@@ -30,20 +30,18 @@ class RecipeSelector extends React.Component {
   setSimRecipe = (newRecipe) => {
     let tempRecipe = newRecipe;
     // this.setState({ recipe: tempRecipe });
-    this.props.setRecipeFunction(tempRecipe);
+    // this.props.setRecipeFunction(tempRecipe);
   }
 
   render() {
     return (
       <div className='stickysim__header_container'>
+
         <div className='stickysim__header-content'>
           <h1 className='gradient__text'>FFXIV Crafting Simulator</h1>
         </div>
         <div className='stickysim__header-content__searches'>
 
-          <div className='stickysim__header-image'>
-              {/* <img src={bun} alt="bun"/>  */}
-          </div>
           <div className='stickysim__craft-classes'>
               { this.classImages.map(({id, title, state}) => <img key={id} src={require(`../../assets/Classes/${title}.png`)} title={title} alt={title} className={state===true ? 'craft-classes-selected' : 'craft-classes-unselected'} onClick={() => this.setToggleClass(id) } /> )}
           </div>

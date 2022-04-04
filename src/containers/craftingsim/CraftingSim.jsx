@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import './craftingsim.css';
 import Asyncstorage from '@react-native-async-storage/async-storage';
+import { connect } from 'react-redux';
 
 
 class CraftingSim extends Component {
@@ -33,10 +34,9 @@ class CraftingSim extends Component {
       }; 
   }
 
-
   componentDidMount = () =>  {
     this._isMounted = true;
-    this.loadData();
+    // this.loadData();
     const actions = require('../../JSON/CraftAction.json');
     this.setState({ craftActions: actions })
     this.props.craftSim.setRecipe(this.props.currRecipe);
@@ -219,9 +219,6 @@ class CraftingSim extends Component {
         // }
 
         // TODO: Update Lvl and Specialist
-        console.log(this.state.mealBonusCraftsmanship);
-        console.log(this.state.mealBonusControl);
-        console.log(this.state.mealBonusCP);
         this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0), 
           parseInt(this.state.controlStat) + parseInt((meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0), 
           parseInt(this.state.cpStat) + parseInt((meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0), 90, 0);
@@ -252,7 +249,7 @@ class CraftingSim extends Component {
 
     try {
       if (this.props.currRecipe !== "") {
-        document.querySelector(".crafting-sim-recipe-icon-img").src = require(`../../assets/RecipeIcons/${ this.props.currRecipe }.png`);
+        document.querySelector(".crafting-sim-recipe-icon-img").src = require(`../../assets/RecipeIcons/${ this.props.recipe }.png`);
       }
 
       const currProgress = document.querySelector('.crafting-sim-progress-bar-current');
@@ -276,9 +273,9 @@ class CraftingSim extends Component {
       const CPHeader = document.querySelector('.crafting-sim-CP-header-right');
       CPHeader.innerHTML = ('<h3>' + (this.props.craftSim.CP) + ' / ' + (this.props.craftSim.maxCP) + '</h3>');
 
-
+      console.log(this.props.recipe)
       const recipeHeader = document.querySelector('.crafting-sim-recipe-title');
-      recipeHeader.innerHTML = ('<h3>Recipe: ' + (this.props.currRecipe) + '</h3>');
+      recipeHeader.innerHTML = ('<h3>Recipe: ' + (this.props.recipe) + '</h3>');
     } catch (error) {
       console.log("Not rendered yet: " + error)
     }
@@ -517,4 +514,17 @@ class CraftingSim extends Component {
   }
 }
 
-export default CraftingSim
+
+const mapStateToFunction = state => {
+  return {
+      recipe: state.recipe
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      // setRecipe: (recipe) => dispatch(setRecipe(recipe))
+  }
+}
+
+export default connect(mapStateToFunction, mapDispatchToProps)(CraftingSim);

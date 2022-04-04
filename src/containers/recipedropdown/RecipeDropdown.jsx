@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import './recipedropdown.css';
 import Asyncstorage from '@react-native-async-storage/async-storage';
-
+import { setRecipe } from '../../context/index'
+import { connect } from 'react-redux';
 
 class RecipeDropDownList extends Component {
     constructor(props) {
@@ -15,10 +16,14 @@ class RecipeDropDownList extends Component {
             recipesAll: []
         }; 
     }
+    // const [] = useState();
+    // const [search, setSearch] = useState("");
+    // const [isActive, setIsActive] = useState(false);
+    // const [recipeNames, setRecipeNames] = useState({});
 
     componentDidMount = () =>  {
         this._isMounted = true;
-        this.loadData();
+        // this.loadData();
         let allRecipesTemp = require('../../JSON/CraftRecipe.json');
         let allRecipesVerifiedTemp = [];
         for (const recipe of allRecipesTemp) {
@@ -37,9 +42,9 @@ class RecipeDropDownList extends Component {
             recipesAll: allRecipesVerifiedTemp
         })
         
-        if (this.props.currRecipe !== "") {
+        if (this.props.recipe !== "") {
             let recipeInput = document.getElementById("recipeInput")
-            recipeInput.value = this.props.currRecipe;
+            recipeInput.value = this.props.recipe;
         }
 
         var input = document.getElementById("recipeInput");
@@ -111,23 +116,30 @@ class RecipeDropDownList extends Component {
     }
 
     
-    chooseOption = async (value) => {
+    chooseOption = (value) => {
+        // const { setRecipe } = useContext(SimContext);
         const newValue = value;
-        this.setState( {selected: newValue} );
+        // this.setState( {selected: newValue} );
+        // setRecipe(newValue);
+        console.log(newValue);
+        this.props.setRecipe(newValue);
         this.setState( {isActive: false} );
         let recipeInput = document.getElementById("recipeInput")
         recipeInput.value = newValue;
-        this.props.setRecipe(newValue);
+        // this.props.setRecipe(newValue);
+
+
         
-        try {
-            await Asyncstorage.setItem('recipe', newValue)
-        }
-        catch (err) {
-            console.log("recipe: " + err)
-        }
+        // try {
+        //     await Asyncstorage.setItem('recipe', newValue)
+        // }
+        // catch (err) {
+        //     console.log("recipe: " + err)
+        // }
     }
 
     render() {
+        // const { recipe } = this.props;
         return (
             <div className="recipe-dropdown" >
                 <div className="recipe-dropdown-search-title"><p>Recipes</p></div>
@@ -167,4 +179,16 @@ class RecipeDropDownList extends Component {
     }
 }
 
-export default RecipeDropDownList;
+const mapStateToFunction = state => {
+    return {
+        recipe: state.recipe
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setRecipe: (recipe) => dispatch(setRecipe(recipe))
+    }
+}
+
+export default connect(mapStateToFunction, mapDispatchToProps)(RecipeDropDownList);

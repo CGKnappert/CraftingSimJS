@@ -66,11 +66,11 @@ class Navbar extends Component {
         </div>
       </div>
       <div className="stickysim-body">
-      <Routes>
-          <Route exact path="/" element={<CraftingSimulatorPage setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
-          <Route path="/statistics" element={<CraftStats setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
-          <Route path="/solver" element={<CraftSolver />} />
-      </Routes>
+        <Routes>
+            <Route exact path="/" element={<CraftingSimulatorPage setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
+            <Route path="/statistics" element={<CraftStats setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
+            <Route path="/solver" element={<CraftSolver />} />
+        </Routes>
       </div>
       </Router>
     )
