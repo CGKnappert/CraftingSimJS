@@ -1,6 +1,7 @@
 import React, { Component, useState, useContext } from 'react';
 import './craftingsim.css';
 import Asyncstorage from '@react-native-async-storage/async-storage';
+import { setMeal, setTincture } from '../../context/index'
 import { connect } from 'react-redux';
 
 
@@ -39,7 +40,7 @@ class CraftingSim extends Component {
     // this.loadData();
     const actions = require('../../JSON/CraftAction.json');
     this.setState({ craftActions: actions })
-    this.props.craftSim.setRecipe(this.props.currRecipe);
+    // this.props.craftSim.setRecipe(this.props.currRecipe);
 
     let mealsTemp = require('../../JSON/Meals.json');
     let allMealsVerifiedTemp = [];
@@ -81,6 +82,10 @@ class CraftingSim extends Component {
   componentDidUpdate = () => {
     // this.simulatorUpdate();
   }
+
+  // shouldComponentUpdate = () => {
+
+  // }
 
   loadData = async () => {
     try {
@@ -165,21 +170,19 @@ class CraftingSim extends Component {
   }
 
   toggleMealHQ = () => {
-    this.setState( {isMealHQ: !this.state.isMealHQ,
-      mealBonusCraftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
-      mealBonusControl: (this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
-      mealBonusCP: (this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
-    } );
-    this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0), 
+    if ( this.props.meal !== undefined) {
+      this.setState( {isMealHQ: !this.state.isMealHQ,
+        mealBonusCraftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
+        mealBonusControl: (this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
+        mealBonusCP: (this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
+      } );
+      
+      this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0), 
       parseInt(this.state.controlStat) + parseInt((this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0), 
       parseInt(this.state.cpStat) + parseInt((this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0), 90, 0);
+    } 
+
     this.simulatorUpdate();
-    // try {
-    //   await Asyncstorage.setItem('mealHQ', !this.state.isMealHQ)
-    // }
-    // catch (err) {
-    //   console.log("toggleMealHQ: " + err)
-    // }
   }
 
   clearMealSearch = () => {
@@ -203,6 +206,8 @@ class CraftingSim extends Component {
     const newValue = value;
     let mealInput = document.getElementById("mealInput");
 
+    this.props.setMeal(newValue);
+
     mealInput.value = newValue;
     for (const meal of this.state.mealArray) {
       if (meal.Name === newValue) {
@@ -211,12 +216,6 @@ class CraftingSim extends Component {
           mealBonusControl: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
           mealBonusCP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0
         } );
-        // try {
-        //   await Asyncstorage.setItem('currMeal', JSON.stringify(meal))
-        // }
-        // catch (err) {
-        //   console.log("toggleMealHQ: " + err)
-        // }
 
         // TODO: Update Lvl and Specialist
         this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0), 
@@ -273,9 +272,6 @@ class CraftingSim extends Component {
       const CPHeader = document.querySelector('.crafting-sim-CP-header-right');
       CPHeader.innerHTML = ('<h3>' + (this.props.craftSim.CP) + ' / ' + (this.props.craftSim.maxCP) + '</h3>');
 
-      console.log(this.props.recipe)
-      const recipeHeader = document.querySelector('.crafting-sim-recipe-title');
-      recipeHeader.innerHTML = ('<h3>Recipe: ' + (this.props.recipe) + '</h3>');
     } catch (error) {
       console.log("Not rendered yet: " + error)
     }
@@ -334,6 +330,7 @@ class CraftingSim extends Component {
 
 
   render() {
+    console.log("Render CSim: " + this.props.recipe)
     // TODO: Set states to const before refercning below
     return (
       <div className='crafting-sim-container'>
@@ -351,8 +348,8 @@ class CraftingSim extends Component {
             </div>
           </div>
           <div className='crafting-sim-recipe-container'>
-            <div className='crafting-sim-recipe-title'/>
-            <div className='crafting-sim-recipe-icon'><img className='crafting-sim-recipe-icon-img' alt='' /></div>
+            <div className='crafting-sim-recipe-title'> <h3> { 'Recipe: ' + (this.props.recipe) } </h3> </div>
+            <div className='crafting-sim-recipe-icon'><img className='crafting-sim-recipe-icon-img' alt='' src={ this.props.recipe !== "" ? require(`../../assets/RecipeIcons/${ this.props.recipe }.png`) : "" } /></div>
           </div>
         </div>
         <div className="crafting-sim-food-and-tinct-container">
@@ -517,13 +514,15 @@ class CraftingSim extends Component {
 
 const mapStateToFunction = state => {
   return {
-      recipe: state.recipe
+      recipe: state.recipe,
+      meal: state.meal
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-      // setRecipe: (recipe) => dispatch(setRecipe(recipe))
+    setMeal: (meal) => dispatch(setMeal(meal)),
+    setTincture: (tincture) => dispatch(setTincture(tincture))
   }
 }
 

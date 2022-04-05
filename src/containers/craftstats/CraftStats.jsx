@@ -1,5 +1,6 @@
 import React from 'react';
 import './craftstats.css';
+import { connect } from 'react-redux';
 
 class CraftStats extends React.Component {
 
@@ -85,4 +86,17 @@ render() {
   }
 }
 
-export default CraftStats
+
+const mapStateToFunction = state => {
+  return {
+      recipe: state.recipe
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      // setRecipe: (recipe) => dispatch(setRecipe(recipe))
+  }
+}
+
+export default connect(mapStateToFunction, mapDispatchToProps)(CraftStats);

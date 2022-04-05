@@ -1,4 +1,4 @@
-export { default as RecipeSelector } from './recipeselector/recipeSelector'
+export { default as RecipeSelector } from './classselector/classSelector'
 export { default as CraftingSim } from './craftingsim/CraftingSim'
 export { default as CraftStats } from './craftstats/CraftStats'
 export { default as CraftSolver } from './craftsolver/CraftSolver'

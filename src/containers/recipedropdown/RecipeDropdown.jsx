@@ -3,6 +3,7 @@ import './recipedropdown.css';
 import Asyncstorage from '@react-native-async-storage/async-storage';
 import { setRecipe } from '../../context/index'
 import { connect } from 'react-redux';
+import LazyLoad from "react-lazyload";
 
 class RecipeDropDownList extends Component {
     constructor(props) {
@@ -166,7 +167,9 @@ class RecipeDropDownList extends Component {
                                     onMouseDown={ this.chooseOption.bind(this, x.Name) }
                                     key={ x.Name }
                                     className="recipe-dropdown-name" >
-                                    <img src={require(`../../assets/RecipeIcons/${x.Name}.png`)} alt='recipe-icon' className="recipe-dropdown-icon"/>
+                                    {/* <LazyLoad height={40}> */}
+                                        <img src={require(`../../assets/RecipeIcons/${x.Name}.png`)} alt='recipe-icon' className="recipe-dropdown-icon"/>
+                                    {/* </LazyLoad> */}
                                     {x.Name}
                                     <div className="recipe-dropdown-level">Level {x.ClassJobLevel}</div>
                                 </div>

@@ -1,7 +1,6 @@
 import { SET_RECIPE, SET_MACRO, SET_MEAL, SET_TINCTURE, SET_CRAFTER } from './sim-actions';
 
 export function setRecipe (recipe) {
-    console.log("index setRecipe: " + recipe)
     return {
         type: SET_RECIPE,
         recipe: recipe

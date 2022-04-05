@@ -24,15 +24,14 @@ tincture: {
 const reducerFunction = (state = initialState, action) => {
     switch(action.type) {
       case SET_RECIPE:
-        console.log("reducer: " + action.newRecipe);
         return {
           ...state,
-          recipe: action.newRecipe
+          recipe: action.recipe
         }
         case SET_MACRO:
           return {
             ...state,
-            macro: action.newMacro
+            macro: action.macro
         }
         case SET_CRAFTER:
             return {
