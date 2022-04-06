@@ -3,6 +3,7 @@ import './craftingsimulatorpage.css';
 import { CraftingSim, RecipeSelector } from '../../containers';
 import Asyncstorage from '@react-native-async-storage/async-storage';
 import RecipeDropDownList from '../../containers/recipedropdown/RecipeDropdown'
+import MealsNTincture from '../../containers/mealsntincture/MealsNTincture'
 import ClassSelector from '../../containers/classselector/classSelector'
 import images from './crafters.js';
 
@@ -81,6 +82,7 @@ class CraftingSimulatorPage extends Component {
                     <CraftingSim setMacroFunction={ this.props.setMacroFunction }  currMacro={ this.props.currMacro } craftSim={ this.props.craftSim } />
                 </div>
                 <div className='stickysim__crafter-meals-and-tincture'>
+                    <MealsNTincture/>
                 </div>
                 <div className='stickysim__macro-state'>
                 </div>

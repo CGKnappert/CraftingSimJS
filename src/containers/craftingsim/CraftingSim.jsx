@@ -16,9 +16,6 @@ class CraftingSim extends Component {
         currProgress: 0,
         currQuality: 0,
         currCP: 0,
-        mealBonusCraftsmanship: 0,
-        mealBonusControl: 0,
-        mealBonusCP: 0,
         // craftSim: props.craftSim,
         // recipe: props.currRecipe,
         craftsmanshipStat: 2000,
@@ -37,41 +34,9 @@ class CraftingSim extends Component {
 
   componentDidMount = () =>  {
     this._isMounted = true;
-    // this.loadData();
+    
     const actions = require('../../JSON/CraftAction.json');
     this.setState({ craftActions: actions })
-    // this.props.craftSim.setRecipe(this.props.currRecipe);
-
-    let mealsTemp = require('../../JSON/Meals.json');
-    let allMealsVerifiedTemp = [];
-    for (const meal of mealsTemp.Results) {
-        try {
-            if (meal.Bonuses.hasOwnProperty("Craftsmanship") || meal.Bonuses.hasOwnProperty("Control") || meal.Bonuses.hasOwnProperty("CP")) {
-              allMealsVerifiedTemp.push(meal);
-            }
-        }
-        catch {
-        }
-    }
-
-    this.setState( {
-      mealArray: allMealsVerifiedTemp
-    })
-
-    var input = document.getElementById("mealInput");
-    input.onfocus = () => {
-        if (input.value === 'Select a meal') {
-            input.value = '';
-        }
-        this.setState({isMealActive : true});
-      }
-
-      input.onblur = () => {
-        if (input.value === '') {
-            input.value = 'Select a meal';
-        }
-        this.setState({isMealActive : false});
-      }
       
     this.simulatorUpdate();
   }
@@ -169,78 +134,6 @@ class CraftingSim extends Component {
     }
   }
 
-  toggleMealHQ = () => {
-    if ( this.props.meal !== undefined) {
-      this.setState( {isMealHQ: !this.state.isMealHQ,
-        mealBonusCraftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
-        mealBonusControl: (this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
-        mealBonusCP: (this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
-      } );
-      
-      this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0), 
-      parseInt(this.state.controlStat) + parseInt((this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0), 
-      parseInt(this.state.cpStat) + parseInt((this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0), 90, 0);
-    } 
-
-    this.simulatorUpdate();
-  }
-
-  clearMealSearch = () => {
-      let mealInput = document.getElementById("mealInput");
-      mealInput.value = '';       
-      this.setState( {isMealActive: true,
-        currMeal: null,
-        mealBonusCraftsmanship: 0,
-        mealBonusControl: 0,
-        mealBonusCP: 0
-      } );
-  }
-
-  clearTinctureSearch = () => {
-      let tinctureInput = document.getElementById("tinctureInput");
-      tinctureInput.value = '';
-      this.setState( {isTinctureActive: true} );
-  }
-
-  updateMeal = (value) => {
-    const newValue = value;
-    let mealInput = document.getElementById("mealInput");
-
-    this.props.setMeal(newValue);
-
-    mealInput.value = newValue;
-    for (const meal of this.state.mealArray) {
-      if (meal.Name === newValue) {
-        this.setState( {currMeal: meal,
-          mealBonusCraftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
-          mealBonusControl: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
-          mealBonusCP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0
-        } );
-
-        // TODO: Update Lvl and Specialist
-        this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0), 
-          parseInt(this.state.controlStat) + parseInt((meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0), 
-          parseInt(this.state.cpStat) + parseInt((meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0), 90, 0);
-        break;
-      }
-    } 
-
-
-    this.setState( {isMealActive: false} );
-    this.simulatorUpdate();
-  }
-
-  updateMealSearch = () => {
-    let mealInput = document.getElementById("recipeInput");
-    this.setState( {search: mealInput.value} );
-  }
-
-  updateTincture = () => {
-      let tinctInput = document.getElementById("tinctInput");
-      this.setState( {currTinct: tinctInput.value} );
-      this.setState( {isTinctActive: false} );
-      this.simulatorUpdate();
-  }
 
   simulatorUpdate = () =>  {
     this.props.craftSim.setRecipe(this.props.currRecipe);
@@ -350,53 +243,6 @@ class CraftingSim extends Component {
           <div className='crafting-sim-recipe-container'>
             <div className='crafting-sim-recipe-title'> <h3> { 'Recipe: ' + (this.props.recipe) } </h3> </div>
             <div className='crafting-sim-recipe-icon'><img className='crafting-sim-recipe-icon-img' alt='' src={ this.props.recipe !== "" ? require(`../../assets/RecipeIcons/${ this.props.recipe }.png`) : "" } /></div>
-          </div>
-        </div>
-        <div className="crafting-sim-food-and-tinct-container">
-          <div className="crafting-sim-food-container">
-            <div className="crafting-sim-meal-dropdown-search-title"><p>Meals</p></div>
-            <input className="crafting-sim-meal-dropdown-button" 
-                    onChange={ () => this.updateMealSearch() }
-                    type="text"
-                    name="mealInput"
-                    id="mealInput"
-                    autoComplete="off"
-            />
-            <img src={require(`../../assets/HQIcon.png`)} className='crafting-sim-meal-dropdown-hq-icon' alt="mealHQ" onClick={ this.toggleMealHQ } style={this.state.isMealHQ ? {opacity: 1} : {opacity: 0.2}} />
-            <img src={require(`../../assets/clear.png`)} className='crafting-sim-meal-dropdown-clear-icon' alt="mealCear" onClick={ this.clearMealSearch }/>
-            {this.state.isMealActive &&
-              <div className="crafting-sim-meal-dropdown-content">
-                {this.state.mealArray
-                  // sort by ilvl desc
-                  .sort((a, b) => b.LevelItem - a.LevelItem)
-                  //Map Name to image and div display
-                  .map((x) => (
-                    <div 
-                      onMouseDown={ this.updateMeal.bind(this, x.Name) }
-                      key={ x.Name }
-                      className="crafting-sim-meal-dropdown-meal" >
-                      <img src={require(`../../assets/Meals/${x.Name}.png`)} className="crafting-sim-meal-dropdown-meal-icon" alt="x.Name" />
-                      <div className="crafting-sim-meal-dropdown-meal-name">{x.Name} </div>
-                    </div>
-                ))}
-              </div>
-            }
-            <div className="crafting-sim-meal-text">
-              <div className="crafting-sim-meal-text-craftsmanship">
-                Cr: {this.state.mealBonusCraftsmanship}  
-              </div>
-              <div className="crafting-sim-meal-text-control">
-                Co: {this.state.mealBonusControl} 
-              </div> 
-              <div className="crafting-sim-meal-text-CP">
-                CP: {this.state.mealBonusCP} 
-              </div>
-              <div className="crafting-sim-meal-text-lvl">
-                iLvl: {(this.state.currMeal !== null && Object.keys(this.state.currMeal).length > 0 && this.state.currMeal.LevelItem !== undefined) ? this.state.currMeal.LevelItem : 0}
-              </div>
-            </div>
-          </div>
-          <div className="crafting-sim-tinct-container">
           </div>
         </div>
         <div className="crafting-sim-status-container">
