@@ -66,8 +66,8 @@ class CrafterStats extends Component {
                     </div>
                 </div>
                 <div className='crafting-sim-recipe-container'>
-                    <div className='crafting-sim-recipe-title'> <h3> {'Recipe: ' + (this.state.recipe)} </h3> </div>
-                    {/* <div className='crafting-sim-recipe-icon'><img className='crafting-sim-recipe-icon-img' alt='' src={ (this.state.recipe !== "" && this.state.recipe !== "undefined") ? require(`../../assets/RecipeIcons/${this.state.recipe}.png`) : ""} /></div> */}
+                    <div className='crafting-sim-recipe-title'> <h3> {'Recipe: ' + (this.props.recipe)} </h3> </div>
+                    <div className='crafting-sim-recipe-icon'><img className='crafting-sim-recipe-icon-img' alt='' src={ (this.props.recipe !== "" && this.props.recipe !== "undefined") ? require(`../../assets/RecipeIcons/${this.props.recipe}.png`) : ""} /></div>
                 </div>
             </div>
         )
@@ -80,6 +80,5 @@ const mapStateToFunction = state => {
         recipe: state.recipe
     }
 }
-
 
 export default connect(mapStateToFunction)(CrafterStats);

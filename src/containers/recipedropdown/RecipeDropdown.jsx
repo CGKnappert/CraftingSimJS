@@ -3,7 +3,6 @@ import './recipedropdown.css';
 import Asyncstorage from '@react-native-async-storage/async-storage';
 import { setRecipe } from '../../context/index'
 import { connect } from 'react-redux';
-import LazyLoad from "react-lazyload";
 
 class RecipeDropDownList extends Component {
     constructor(props) {

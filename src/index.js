@@ -10,5 +10,4 @@ ReactDOM.render(
     <Provider store={simStore}>
         <App />
     </Provider>
-
 , document.getElementById('root'));

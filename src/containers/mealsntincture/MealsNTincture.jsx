@@ -148,6 +148,7 @@ class MealsNTincture extends Component {
         this.setState({ currTinct: tinctInput.value });
         this.setState({ isTinctActive: false });
         this.props.simulatorUpdate();
+        this.props.setTincture()
     }
 
     updateTinctureSearch = () => {
@@ -252,8 +253,8 @@ class MealsNTincture extends Component {
 
 const mapStateToFunction = state => {
     return {
-        recipe: state.recipe,
-        meal: state.meal
+        meal: state.meal,
+        tincture: state.tincture
     }
 }
 
