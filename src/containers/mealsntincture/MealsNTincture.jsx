@@ -36,9 +36,11 @@ class MealsNTincture extends Component {
             catch {
             }
         }
+        let tinctureTemp = require('../../JSON/Tinctures.json');
 
         this.setState({
-            mealArray: allMealsVerifiedTemp
+            mealArray: allMealsVerifiedTemp,
+            tinctureArray: tinctureTemp.Results
         })
 
         var mealInput = document.getElementById("mealInput");
@@ -54,6 +56,21 @@ class MealsNTincture extends Component {
                 mealInput.value = 'Select a meal';
             }
             this.setState({ isMealActive: false });
+        }
+
+        var tinctureInput = document.getElementById("tinctureInput");
+        tinctureInput.onfocus = () => {
+            if (tinctureInput.value === 'Select a tincture') {
+                tinctureInput.value = '';
+            }
+            this.setState({ isTinctureActive: true });
+        }
+
+        tinctureInput.onblur = () => {
+            if (tinctureInput.value === '') {
+                tinctureInput.value = 'Select a tincture';
+            }
+            this.setState({ isTinctureActive: false });
         }
     }
 
@@ -71,7 +88,7 @@ class MealsNTincture extends Component {
                 parseInt(this.state.cpStat) + parseInt((this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0), 90, 0);
         }
 
-        this.simulatorUpdate();
+        this.props.simulatorUpdate();
     }
 
     clearMealSearch = () => {
@@ -118,7 +135,7 @@ class MealsNTincture extends Component {
 
 
         this.setState({ isMealActive: false });
-        this.simulatorUpdate();
+        this.props.simulatorUpdate();
     }
 
     updateMealSearch = () => {
@@ -130,7 +147,7 @@ class MealsNTincture extends Component {
         let tinctInput = document.getElementById("tinctureInput");
         this.setState({ currTinct: tinctInput.value });
         this.setState({ isTinctActive: false });
-        this.simulatorUpdate();
+        this.props.simulatorUpdate();
     }
 
     updateTinctureSearch = () => {

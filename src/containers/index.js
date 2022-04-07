@@ -1,5 +1,6 @@
 export { default as RecipeSelector } from './classselector/classSelector'
-export { default as CraftingSim } from './craftingsim/CraftingSim'
+export { default as CrafterActions } from './crafteractions/CrafterActions'
+export { default as CrafterStats } from './crafterstats/CrafterStats'
 export { default as CraftStats } from './craftstats/CraftStats'
 export { default as CraftSolver } from './craftsolver/CraftSolver'
 export { default as Footer } from './footer/Footer'
