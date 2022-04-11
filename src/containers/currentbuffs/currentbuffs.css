@@ -9,7 +9,7 @@
 }
 
   /* Whole container */
-.crafting-sim-macro {
+.crafting-sim-buffs-active {
     position: relative;
     height: 100%;
     width: 80%;
@@ -33,32 +33,21 @@
 
 
 
-
-/*#region - Current Macro Bar */  
-.crafting-sim-macro {
+/*#region - Current Buffs Bar */  
+.crafting-sim-buffs-active {
     height: calc(var(--main-scalar) * 10px);
-    background: blue;
+    background: rgb(216, 65, 178);
+    margin-top: 10px;
     margin-bottom: 10px;
-
+    padding-top: calc(var(--main-scalar) * 1px);
 }
 
-.crafting-sim-macro-header {
+.crafting-sim-buffs-active-header {
     margin: 0px 0px 0px 25px;
     font-family: var(--font-family);
-    padding-top: calc(var(--main-scalar) * 1px);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(1, 2vw);
-    grid-gap: auto;
 }
 
-.crafting-sim-macro-header-right {
-    text-align: right;
-    padding-right: calc(var(--main-scalar) * 2px);
-    margin-left: calc(var(--main-scalar) * 1px);
-}
-
-.crafting-sim-macro-actions {
+.crafting-sim-buffs-active-image {
     display: grid;
     grid-template-columns: repeat(18, 1fr);
     grid-template-rows: repeat(1, 4vw);
@@ -66,12 +55,12 @@
     margin: 10px 0px 0px 25px;
 }
 
-.crafting-sim-macro img {
-    border-color: rgb(8, 8, 8);
+.crafting-sim-buffs-active img {
+    /* border-color: rgb(8, 8, 8);
     border-radius: calc(var(--main-scalar) * .5px);
-    box-shadow: 0px 3px 15px rgba(0,0,0,.4);
+    box-shadow: 0px 3px 15px rgba(0,0,0,.4); */
     cursor: pointer;
-    height: calc(var(--main-scalar) * 4px);
+    height: calc(var(--main-scalar) * 5px);
     width: calc(var(--main-scalar) * 4px);
 }
 /*#endregion*/

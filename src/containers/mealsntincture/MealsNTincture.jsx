@@ -14,7 +14,7 @@ class MealsNTincture extends Component {
             tinctureBonusControl: 0,
             tinctureBonusCP: 0,
             currMeal: {},
-            currTinct: {},
+            currTincture: {},
             mealArray: [],
             tinctureArray: [],
             isMealHQ: false,
@@ -26,20 +26,10 @@ class MealsNTincture extends Component {
 
     componentDidMount = () => {
         let mealsTemp = require('../../JSON/Meals.json');
-        let allMealsVerifiedTemp = [];
-        for (const meal of mealsTemp.Results) {
-            try {
-                if (meal.Bonuses.hasOwnProperty("Craftsmanship") || meal.Bonuses.hasOwnProperty("Control") || meal.Bonuses.hasOwnProperty("CP")) {
-                    allMealsVerifiedTemp.push(meal);
-                }
-            }
-            catch {
-            }
-        }
         let tinctureTemp = require('../../JSON/Tinctures.json');
 
         this.setState({
-            mealArray: allMealsVerifiedTemp,
+            mealArray: mealsTemp.Results,
             tinctureArray: tinctureTemp.Results
         })
 
@@ -75,17 +65,24 @@ class MealsNTincture extends Component {
     }
 
     toggleMealHQ = () => {
-        if (this.props.meal !== undefined) {
+        if (this.state.currMeal !== undefined) {
+            let isHQ = !this.state.isMealHQ;
             this.setState({
+                isMealActive: false,
                 isMealHQ: !this.state.isMealHQ,
                 mealBonusCraftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
                 mealBonusControl: (this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
                 mealBonusCP: (this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
             });
 
-            this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0),
-                parseInt(this.state.controlStat) + parseInt((this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0),
-                parseInt(this.state.cpStat) + parseInt((this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0), 90, 0);
+            this.props.setMeal(
+                {
+                    Craftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (isHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
+                    Control: (this.state.currMeal.Bonuses.Control !== undefined) ? (isHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
+                    CP: (this.state.currMeal.Bonuses.CP !== undefined) ? (isHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
+
+                }
+            )
         }
 
         this.props.simulatorUpdate();
@@ -95,7 +92,7 @@ class MealsNTincture extends Component {
         let mealInput = document.getElementById("mealInput");
         mealInput.value = '';
         this.setState({
-            isMealActive: true,
+            isMealActive: false,
             currMeal: null,
             mealBonusCraftsmanship: 0,
             mealBonusControl: 0,
@@ -103,38 +100,37 @@ class MealsNTincture extends Component {
         });
     }
 
-    clearTinctureSearch = () => {
-        let tinctureInput = document.getElementById("tinctureInput");
-        tinctureInput.value = '';
-        this.setState({ isTinctureActive: true });
-    }
-
     updateMeal = (value) => {
         const newValue = value;
         let mealInput = document.getElementById("mealInput");
-
-        this.props.setMeal(newValue);
 
         mealInput.value = newValue;
         for (const meal of this.state.mealArray) {
             if (meal.Name === newValue) {
                 this.setState({
+                    isMealActive: false,
                     currMeal: meal,
                     mealBonusCraftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
                     mealBonusControl: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
                     mealBonusCP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0
                 });
 
+                this.props.setMeal(
+                    {
+                        Craftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
+                        Control: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
+                        CP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0
+                    }
+                )
+
                 // TODO: Update Lvl and Specialist
-                this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0),
-                    parseInt(this.state.controlStat) + parseInt((meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0),
-                    parseInt(this.state.cpStat) + parseInt((meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0), 90, 0);
+                // this.props.craftSim.updateCrafterStats(parseInt(this.state.craftsmanshipStat) + parseInt((meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0),
+                //     parseInt(this.state.controlStat) + parseInt((meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0),
+                //     parseInt(this.state.cpStat) + parseInt((meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0), 90, 0);
                 break;
             }
         }
 
-
-        this.setState({ isMealActive: false });
         this.props.simulatorUpdate();
     }
 
@@ -143,16 +139,80 @@ class MealsNTincture extends Component {
         this.setState({ mealSearch: mealInput.value });
     }
 
-    updateTincture = () => {
-        let tinctInput = document.getElementById("tinctureInput");
-        this.setState({ currTinct: tinctInput.value });
-        this.setState({ isTinctActive: false });
+    updateTincture = (value) => {
+        const newValue = value;
+        let tinctureInput = document.getElementById("tinctureInput");
+        tinctureInput.value = newValue;
+
+        
+        for (const tincture of this.state.tinctureArray) {
+            if (tincture.Name === newValue) {
+                this.setState({
+                    isTinctureActive: false,
+                    currTincture: tincture,
+                    tinctureBonusCraftsmanship: (tincture.Bonuses.Craftsmanship !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.Craftsmanship.MaxHQ : tincture.Bonuses.Craftsmanship.Max) : 0,
+                    tinctureBonusControl: (tincture.Bonuses.Control !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.Control.MaxHQ : tincture.Bonuses.Control.Max) : 0,
+                    tinctureBonusCP: (tincture.Bonuses.CP !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.CP.MaxHQ : tincture.Bonuses.CP.Max) : 0
+                });
+
+                this.props.setTincture(
+                    {
+                        Craftsmanship: (tincture.Bonuses.Craftsmanship !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.Craftsmanship.MaxHQ : tincture.Bonuses.Craftsmanship.Max) : 0,
+                        Control: (tincture.Bonuses.Control !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.Control.MaxHQ : tincture.Bonuses.Control.Max) : 0,
+                        CP: (tincture.Bonuses.CP !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.CP.MaxHQ : tincture.Bonuses.CP.Max) : 0
+                    }
+                )
+
+            }
+        }
+        
+        this.props.simulatorUpdate();
+    }
+
+    toggleTinctureHQ = () => {
+        console.log(this.state.currTincture);
+        if (this.state.currTincture !== undefined) {
+            let isHQ = !this.state.isTinctureHQ;
+            this.setState({
+                isTinctureActive: false,
+                isTinctureHQ: !this.state.isTinctureHQ,
+                tinctureBonusCraftsmanship: (this.state.currTincture.Bonuses.Craftsmanship !== undefined) ? (!this.state.isTinctureHQ ? this.state.currTincture.Bonuses.Craftsmanship.MaxHQ : this.state.currTincture.Bonuses.Craftsmanship.Max) : 0,
+                tinctureBonusControl: (this.state.currTincture.Bonuses.Control !== undefined) ? (!this.state.isTinctureHQ ? this.state.currTincture.Bonuses.Control.MaxHQ : this.state.currTincture.Bonuses.Control.Max) : 0,
+                tinctureBonusCP: (this.state.currTincture.Bonuses.CP !== undefined) ? (!this.state.isTinctureHQ ? this.state.currTincture.Bonuses.CP.MaxHQ : this.state.currTincture.Bonuses.CP.Max) : 0
+            });
+
+            this.props.setTincture(
+                {
+                    Craftsmanship: (this.state.currTincture.Bonuses.Craftsmanship !== undefined) ? (isHQ ? this.state.currTincture.Bonuses.Craftsmanship.MaxHQ : this.state.currTincture.Bonuses.Craftsmanship.Max) : 0,
+                    Control: (this.state.currTincture.Bonuses.Control !== undefined) ? (isHQ ? this.state.currTincture.Bonuses.Control.MaxHQ : this.state.currTincture.Bonuses.Control.Max) : 0,
+                    CP: (this.state.currTincture.Bonuses.CP !== undefined) ? (isHQ ? this.state.currTincture.Bonuses.CP.MaxHQ : this.state.currTincture.Bonuses.CP.Max) : 0
+
+                }
+            )
+        }
+
         this.props.simulatorUpdate();
     }
 
     updateTinctureSearch = () => {
         let tinctureInput = document.getElementById("tinctureInput");
         this.setState({ tinctureSearch: tinctureInput.value });
+    }
+
+    clearTinctureSearch = () => {
+        let tinctureInput = document.getElementById("tinctureInput");
+        tinctureInput.value = '';
+        this.setState({ isTinctureActive: true });
+        this.props.setTincture(
+            {
+                Craftsmanship: 0,
+                Control: 0,
+                CP: 0
+
+            }
+        )
+        
+        this.props.simulatorUpdate();
     }
 
     render() {
@@ -230,7 +290,7 @@ class MealsNTincture extends Component {
                                 ))}
                         </div>
                     }
-                    {/* <div className="crafting-sim-tincture-text">
+                    <div className="crafting-sim-tincture-text">
                         <div className="crafting-sim-tincture-text-craftsmanship">
                             Cr: {this.state.tinctureBonusCraftsmanship}
                         </div>
@@ -240,10 +300,10 @@ class MealsNTincture extends Component {
                         <div className="crafting-sim-tincture-text-CP">
                             CP: {this.state.tinctureBonusCP}
                         </div>
-                        <div className="crafting-sim-meal-text-lvl">
-                            iLvl: {(this.state.currTincure !== null && Object.keys(this.state.currTincure).length > 0 && this.state.currTincure.LevelItem !== undefined) ? this.state.currTincure.LevelItem : 0}
-                        </div>
-                    </div> */}
+                        {/* <div className="crafting-sim-tincture-text-lvl">
+                            iLvl: {(this.state.currTincture !== null && Object.keys(this.state.currTincture).length > 0 && this.state.currTincture.LevelItem !== undefined) ? this.state.currTincture.LevelItem : 0}
+                        </div> */}
+                    </div>
                 </div>
             </div>
         )

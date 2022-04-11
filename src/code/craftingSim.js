@@ -37,7 +37,6 @@ class Recipe {
 
         for (var recipe of recipeJSON) {
             if(recipe["Name"] === name) {
-                console.log("Found: " + name)
                 this.name = name;
                 this.durability = recipe["RecipeLevelTable"]["Durability"];
                 this.difficulty = recipe["RecipeLevelTable"]["Difficulty"];
@@ -102,6 +101,7 @@ class CrafterSim {
         this.recipeName = recipeName;
         this.actionDict = {};
         this.activeBuffs = {};
+        this.currMacro = [];
         this.startingQuality = startingQuality;
         // Crafter's properties
         this.craftsmanship = craftsmanship;
@@ -132,6 +132,9 @@ class CrafterSim {
 
     get recipe() { return this._recipe }
     set recipe(value) { this._recipe = value }
+
+    get currMacro() { return this._currMacro }
+    set currMacro(value) { this._currMacro = value }
 
     get durability() { return this._durability }
     set durability(value) { this._durability = value }
@@ -194,7 +197,6 @@ class CrafterSim {
     set qualityDivider(value) { this._qualityDivider = value }
 
     updateCrafterCraftsmanshipStat(craftsmanship) {
-        console.log("sim Cr: " + craftsmanship)
         this.craftsmanship = craftsmanship;
     }
 
@@ -246,6 +248,7 @@ class CrafterSim {
             this.progress = 0;
             this.quality = this.startingQuality;
         }
+        console.log("Recipe set: " + currRecipe.name)
     }
 
     loadActions() {        
@@ -435,10 +438,13 @@ class CrafterSim {
         let step = 0;
         this.durability = this.recipeDurability;
         this.activeBuffs = {};
+        this.currMacro = macro;
         this.CP = this.maxCP;
         this.progress = 0;
         this.quality = this.startingQuality;
         var condition = "normal";
+
+        if (!macro.length > 0) return 0;
 
         while (this.durability > 0 && this.progress < this.difficulty && step < macro.length) {
             this.executeStep(macro[step - 1], macro[step], condition, simulateConditions);

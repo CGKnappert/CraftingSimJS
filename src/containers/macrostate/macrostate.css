@@ -1,0 +1,156 @@
+:root {
+    --main-scalar: 12;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+}
+
+
+  /* Whole container */
+  .crafting-sim-status-container {
+    position: relative;
+    height: 100%;
+    width: 80%;
+    margin: 20px auto;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+    letter-spacing: .03em;
+    color: #fff;
+    text-shadow:
+        0.05em 0 black,
+        0 0.05em black,
+        -0.05em 0 black,
+        0 -0.05em black,
+        -0.05em -0.05em black,
+        -0.05em 0.05em black,
+        0.05em -0.05em black,
+        0.05em 0.05em black;
+}
+
+
+
+.crafting-sim-status-container {
+    height: 320px;
+    margin-top: 10px;
+    background: yellow;
+}
+
+/*#region - Progress Bar */
+.crafting-sim-progress-status {
+    padding-top: calc(var(--main-scalar) * 1px);
+    margin: 0px calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-progress-header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 2vw);
+    grid-gap: auto;
+}
+
+.crafting-sim-progress-header-right {
+    text-align: right;
+    padding-right: calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-progress-bar-total {
+    background-color: rgb(41, 41, 41);
+    border-radius: calc(var(--main-scalar) * 1px);
+    height: calc(var(--main-scalar) * 2px);
+    width: 100%;
+    z-index: 0;
+}
+
+.crafting-sim-progress-bar-current {
+    padding-top: 10px;
+    background-color: rgb(24, 158, 12);
+    border-radius: calc(var(--main-scalar) * 1px);
+    height: calc(var(--main-scalar) * 2px);
+    width: 0;
+    opacity: 0;
+    transition: .5s ease;
+    z-index: 1;
+}
+/*#endregion*/
+
+/*#region - Quality Bar */  
+.crafting-sim-quality-status {
+    padding-top: calc(var(--main-scalar) * 1px);
+    margin: calc(var(--main-scalar) * 2px) calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-quality-header {
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 2vw);
+    grid-gap: auto;
+}
+
+.crafting-sim-quality-header-right {
+    text-align: right;
+    padding-right: calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-quality-bar-total {
+    background-color: rgb(41, 41, 41);
+    border-radius: calc(var(--main-scalar) * 1px);
+    height: calc(var(--main-scalar) * 2px);
+    width: 100%;
+    z-index: 0;
+}
+
+.crafting-sim-quality-bar-current {
+    padding-top: 10px;
+    background-color: rgb(47, 66, 175);
+    border-radius: calc(var(--main-scalar) * 1px);
+    height: calc(var(--main-scalar) * 2px);
+    width: 0;
+    opacity: 0;
+    transition: .5s ease;
+    z-index: 1;
+}
+/*#endregion*/
+
+/*#region - CP Bar */  
+.crafting-sim-CP-status {
+    padding-top: calc(var(--main-scalar) * 1px);
+    margin: calc(var(--main-scalar) * 2px) calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-CP-header {
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 2vw);
+    grid-gap: auto;
+}
+
+.crafting-sim-CP-header-right {
+    text-align: right;
+    padding-right: calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-CP-bar-total {
+    background-color: rgb(41, 41, 41);
+    border-radius: calc(var(--main-scalar) * 1px);
+    height: calc(var(--main-scalar) * 2px);
+    width: 100%;
+    z-index: 0;
+}
+
+.crafting-sim-CP-bar-current {
+    padding-top: 10px;
+    background-color: rgb(228, 185, 47);
+    border-radius: calc(var(--main-scalar) * 1px);
+    height: calc(var(--main-scalar) * 2px);
+    width: 0;
+    opacity: 0;
+    transition: .5s ease;
+    z-index: 1;
+}
