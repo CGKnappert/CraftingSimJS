@@ -1,3 +1,4 @@
+import CrafterSim from '../code/craftingSim.js'
 import { SET_RECIPE, SET_MACRO, SET_MEAL, SET_TINCTURE, SET_CRAFTER_CRAFTSMANSHIP, SET_CRAFTER_CONTROL, SET_CRAFTER_CP, SET_CRAFTER_LEVEL, SET_CRAFTER_SPECIALIST, ADD_MACRO_ACTION, REMOVE_MACRO_ACTION } from './sim-actions';
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
     Craftsmanship: 0,
     Control: 0,
     CP: 0
-  }
+  },
+  macroState: {}
 };
 
 const reducerFunction = (state = initialState, action) => {

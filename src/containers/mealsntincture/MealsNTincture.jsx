@@ -101,6 +101,7 @@ class MealsNTincture extends Component {
     }
 
     updateMeal = (value) => {
+        console.log("Set food" + value)
         const newValue = value;
         let mealInput = document.getElementById("mealInput");
 
@@ -132,6 +133,7 @@ class MealsNTincture extends Component {
         }
 
         this.props.simulatorUpdate();
+        this.props.simulatorRefresh();
     }
 
     updateMealSearch = () => {

@@ -25,7 +25,7 @@ class CraftingSimulatorPage extends Component {
             difficulty: 0,
             quality: 0,
             recipeQuality: 0,
-            CP: 0,
+            currCP: 0,
             craftSim: tempSim
         }
     }
@@ -46,13 +46,13 @@ class CraftingSimulatorPage extends Component {
         // let tempMacro = this.props.macro;
         // let tempRecipe = this.props.recipe;
         // this.state.craftSim.setRecipe(tempRecipe);
-        console.log(this.props.recipe)
         this.simulatorUpdate();
         // console.log(this.state.craftSim.difficulty)
         // this.state.craftSim.executeMacro(tempMacro, false, false);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        // this.simulatorUpdate();
         if (nextProps.recipe !== this.props.recipe) return true;
         if (nextProps.meal !== this.props.meal) return true;
         if (nextProps.tincture !== this.props.tincture) return true;
@@ -76,6 +76,7 @@ class CraftingSimulatorPage extends Component {
     }
 
     simulatorUpdate = () => {
+        console.log("SimUp")
         console.log(this.props.meal)
         console.log(this.props.tincture)
         this.state.craftSim.updateCrafterStats(
@@ -98,14 +99,14 @@ class CraftingSimulatorPage extends Component {
             progress: this.state.craftSim.progress,
             quality: this.state.craftSim.quality,
             recipeQuality: this.state.craftSim.recipeQuality,
-            CP: this.state.craftSim.CP,
+            currCP: this.state.craftSim.CP,
             currBuffs: this.state.craftSim.activeBuffs
         })
     }
     
     simulatorRefresh = () => {
         console.log("forceup")
-        this.forceUpdate();
+        // this.forceUpdate();
     }
 
     render() {
@@ -129,11 +130,11 @@ class CraftingSimulatorPage extends Component {
                 </div>
 
                 <div className='stickysim__crafter-meals-and-tincture'>
-                    <MealsNTincture simulatorUpdate={this.simulatorUpdate} />
+                    <MealsNTincture simulatorUpdate={this.simulatorUpdate} simulatorRefresh={this.simulatorRefresh}  />
                 </div>
 
                 <div className='stickysim__macro-state'>
-                    <MacroState progress={this.state.progress} difficulty={this.state.difficulty} quality={this.state.craftSim.quality} recipeQuality={this.state.craftSim.recipeQuality} CP={this.state.craftSim.CP} currRecipe={this.props.recipe}  />
+                    <MacroState progress={this.state.progress} difficulty={this.state.difficulty} quality={this.state.craftSim.quality} recipeQuality={this.state.craftSim.recipeQuality} currCP={this.state.currCP} currRecipe={this.props.recipe}  />
                 </div>
 
                 <div className='stickysim__current-buffs'>

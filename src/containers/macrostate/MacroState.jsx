@@ -6,16 +6,7 @@ import { connect } from 'react-redux';
 
 
 class MacroState extends Component {
-    constructor(props) {
-        super(props);
-            this.state = { 
-        //         currBuffs: {},
-        //         currDurability: 0,
-                currProgress: props.progress,
-        //         currQuality: 0,
-        //         currCP: 0
-            }
-    }
+    
     componentDidMount = () => {
         this._isMounted = true;
         this.simulatorUpdate();
@@ -27,9 +18,8 @@ class MacroState extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         console.log("shioudlmacro update");
-        console.log(nextProps);
         console.log(this.props);
-        console.log(nextState);
+        console.log(nextProps);
         if (nextProps.progress !== this.props.progress) return true;
         if (nextProps.difficulty !== this.props.difficulty) return true;
         if (nextProps.quality !== this.props.progress) return true;
@@ -62,7 +52,7 @@ class MacroState extends Component {
             qualityHeader.innerHTML = ('<h3>' + (this.props.quality) + ' / ' + ((this.props.recipeQuality !== undefined) ? this.props.recipeQuality : 0) + '</h3>');
 
             const CPHeader = document.querySelector('.crafting-sim-CP-header-right');
-            CPHeader.innerHTML = ('<h3>' + (this.props.CP) + ' / ' + (this.props.MaxCP + this.props.mealCP + this.props.tinctureCP) + '</h3>');
+            CPHeader.innerHTML = ('<h3>' + (this.props.currCP) + ' / ' + (this.props.MaxCP + this.props.mealCP + this.props.tinctureCP) + '</h3>');
 
         } catch (error) {
             console.log("Not rendered yet: " + error)
