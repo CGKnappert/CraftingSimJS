@@ -7,12 +7,6 @@ class MealsNTincture extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mealBonusCraftsmanship: 0,
-            mealBonusControl: 0,
-            mealBonusCP: 0,
-            tinctureBonusCraftsmanship: 0,
-            tinctureBonusControl: 0,
-            tinctureBonusCP: 0,
             currMeal: {},
             currTincture: {},
             mealArray: [],
@@ -70,9 +64,9 @@ class MealsNTincture extends Component {
             this.setState({
                 isMealActive: false,
                 isMealHQ: !this.state.isMealHQ,
-                mealBonusCraftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
-                mealBonusControl: (this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
-                mealBonusCP: (this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
+            //     mealBonusCraftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
+            //     mealBonusControl: (this.state.currMeal.Bonuses.Control !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
+            //     mealBonusCP: (this.state.currMeal.Bonuses.CP !== undefined) ? (!this.state.isMealHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0
             });
 
             this.props.setMeal(
@@ -92,12 +86,19 @@ class MealsNTincture extends Component {
         let mealInput = document.getElementById("mealInput");
         mealInput.value = '';
         this.setState({
-            isMealActive: false,
+        //     isMealActive: false,
             currMeal: null,
-            mealBonusCraftsmanship: 0,
-            mealBonusControl: 0,
-            mealBonusCP: 0
+        //     mealBonusCraftsmanship: 0,
+        //     mealBonusControl: 0,
+        //     mealBonusCP: 0
         });
+        this.props.setMeal(
+            {
+                Craftsmanship: 0,
+                Control: 0,
+                CP: 0
+            }
+        )
     }
 
     updateMeal = (value) => {
@@ -111,9 +112,9 @@ class MealsNTincture extends Component {
                 this.setState({
                     isMealActive: false,
                     currMeal: meal,
-                    mealBonusCraftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
-                    mealBonusControl: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
-                    mealBonusCP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0
+                //     mealBonusCraftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
+                //     mealBonusControl: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
+                //     mealBonusCP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0
                 });
 
                 this.props.setMeal(

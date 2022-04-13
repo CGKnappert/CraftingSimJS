@@ -10,6 +10,7 @@
 
 .crafting-sim-meal-and-tincture-container {
     width: 80%;
+    min-width: 650px;
     position: relative;
     border: solid;
     border-width: 4px;
@@ -27,7 +28,7 @@
 }
 
 .crafting-sim-meal-container {
-    height: 90px;
+    height: 80px;
     z-index: 1;
     left: 5%;
     /* background: rgb(216, 189, 140); */
@@ -278,10 +279,29 @@
 
 @media only screen and (max-width: 1450px) {
     .crafting-sim-meal-and-tincture-container {
-        height: 200px;
+        height: 190px;
     }
 
-    .crafting-sim-tincture-container {
-        justify-items: center;
+    .crafting-sim-meal-dropdown-button {
+        margin-left: 45px;
+    }
+
+    .crafting-sim-meal-text {
+        margin-right: 20%;
+    }
+
+    .crafting-sim-tincture-text {
+        margin-right: 20%;
+    }
+}
+
+
+@media only screen and (max-width: 850px) {
+    .crafting-sim-meal-text {
+        margin-right: 20px;
+    }
+    
+    .crafting-sim-tincture-text {
+        margin-right: 20px;
     }
 }
