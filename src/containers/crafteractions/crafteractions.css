@@ -8,7 +8,7 @@
     font-family: var(--font-family);
 }
 
-  /* Whole container */
+/* Whole container */
 .crafting-sim-container {
     position: relative;
     height: 100%;
@@ -31,7 +31,82 @@
         0.05em 0.05em black;
 }
 
+.export-overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(0, 0, 0, .5);
+    opacity: .5;
+    z-index: 9;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
 
+.export-overlay-window {
+    position: fixed;
+    height: 600px;
+    width: 400px;
+    background: rgb(5, 5, 5, 1);
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 12;
+}
+
+.export-overlay-macro {
+    opacity: 1;
+    position: relative;
+    height: 90%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 5%;
+    resize: none;
+}
+.import-overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgb(0, 0, 0, .5);
+    opacity: .5;
+    z-index: 9;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.import-overlay-window {
+    position: fixed;
+    height: 600px;
+    width: 400px;
+    background: rgb(5, 5, 5, 1);
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 12;
+}
+
+.import-overlay-macro {
+    opacity: 1;
+    position: relative;
+    height: 90%;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 5%;
+    resize: none;
+}
+
+.importMacro {
+    bottom: 0;
+}
 
 .crafting-sim-status-container {
     height: 320px;
@@ -73,9 +148,10 @@
     opacity: 0;
     transition: .5s ease;
 }
+
 /*#endregion*/
 
-/*#region - Quality Bar */  
+/*#region - Quality Bar */
 .crafting-sim-quality-status {
     padding-top: calc(var(--main-scalar) * 1px);
     margin: calc(var(--main-scalar) * 2px) calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
@@ -110,9 +186,10 @@
     opacity: 0;
     transition: .5s ease;
 }
+
 /*#endregion*/
 
-/*#region - CP Bar */  
+/*#region - CP Bar */
 .crafting-sim-CP-status {
     padding-top: calc(var(--main-scalar) * 1px);
     margin: calc(var(--main-scalar) * 2px) calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
@@ -147,9 +224,10 @@
     opacity: 0;
     transition: .5s ease;
 }
+
 /*#endregion*/
 
-/*#region - Current Buffs Bar */  
+/*#region - Current Buffs Bar */
 .crafting-sim-buffs-active {
     height: calc(var(--main-scalar) * 10px);
     background: rgb(216, 65, 178);
@@ -179,9 +257,10 @@
     height: calc(var(--main-scalar) * 5px);
     width: calc(var(--main-scalar) * 4px);
 }
+
 /*#endregion*/
 
-/*#region - Current Macro Bar */  
+/*#region - Current Macro Bar */
 .crafting-sim-macro {
     height: calc(var(--main-scalar) * 10px);
     background: blue;
@@ -216,11 +295,12 @@
 .crafting-sim-macro img {
     border-color: rgb(8, 8, 8);
     border-radius: calc(var(--main-scalar) * .5px);
-    box-shadow: 0px 3px 15px rgba(0,0,0,.4);
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, .4);
     cursor: pointer;
     height: calc(var(--main-scalar) * 4px);
     width: calc(var(--main-scalar) * 4px);
 }
+
 /*#endregion*/
 
 
@@ -241,7 +321,7 @@
 .crafting-sim-actions img {
     border-color: rgb(8, 8, 8);
     border-radius: calc(var(--main-scalar) * .5px);
-    box-shadow: 0px 3px 15px rgba(0,0,0,.4);
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, .4);
     cursor: pointer;
     height: calc(var(--main-scalar) * 4px);
     width: calc(var(--main-scalar) * 4px);
@@ -281,8 +361,8 @@
 }
 
 .slide-left {
-	-webkit-animation: slide-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	        animation: slide-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    -webkit-animation: slide-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
 .crafting-sim-food-container {
