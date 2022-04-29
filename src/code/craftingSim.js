@@ -36,8 +36,7 @@ class Recipe {
         let recipeJSON = jsonString;
 
         for (var recipe of recipeJSON) {
-            if(recipe["Name"] === name) {
-                console.log("Found: " + name)
+            if (recipe["Name"] === name) {
                 this.name = name;
                 this.durability = recipe["RecipeLevelTable"]["Durability"];
                 this.difficulty = recipe["RecipeLevelTable"]["Difficulty"];
@@ -51,7 +50,7 @@ class Recipe {
             }
         }
     }
-    
+
     print() {
         console.log("Name: " + String(this.name));
         console.log("durability: " + String(this.durability));
@@ -102,6 +101,7 @@ class CrafterSim {
         this.recipeName = recipeName;
         this.actionDict = {};
         this.activeBuffs = {};
+        this.currMacro = [];
         this.startingQuality = startingQuality;
         // Crafter's properties
         this.craftsmanship = craftsmanship;
@@ -133,6 +133,9 @@ class CrafterSim {
     get recipe() { return this._recipe }
     set recipe(value) { this._recipe = value }
 
+    get currMacro() { return this._currMacro }
+    set currMacro(value) { this._currMacro = value }
+
     get durability() { return this._durability }
     set durability(value) { this._durability = value }
 
@@ -144,19 +147,19 @@ class CrafterSim {
 
     get control() { return this._control }
     set control(value) { this._control = value }
-    
+
     get maxCP() { return this._maxCP }
     set maxCP(value) { this._maxCP = value }
 
     get CP() { return this._CP }
     set CP(value) { this._CP = value }
-    
+
     get clvl() { return this._clvl }
     set clvl(value) { this._clvl = value }
 
     get specialist() { return this._specialist }
     set specialist(value) { this._specialist = value }
-    
+
     get startingQuality() { return this._startingQuality }
     set startingQuality(value) { this._startingQuality = value }
 
@@ -194,7 +197,6 @@ class CrafterSim {
     set qualityDivider(value) { this._qualityDivider = value }
 
     updateCrafterCraftsmanshipStat(craftsmanship) {
-        console.log("sim Cr: " + craftsmanship)
         this.craftsmanship = craftsmanship;
     }
 
@@ -246,9 +248,10 @@ class CrafterSim {
             this.progress = 0;
             this.quality = this.startingQuality;
         }
+        console.log("Recipe set: " + currRecipe.name)
     }
 
-    loadActions() {        
+    loadActions() {
         let jsonString = require('../JSON/CraftAction.json');
         let actionJSON = jsonString;
 
@@ -261,31 +264,31 @@ class CrafterSim {
             //durability cost is 10 unless stated otherwise
             let durability = (description.search(/Durability Cost/) < 0 ? 10 : parseInt(description.substring(description.search(/Restores item durability/), description.length).match(/\d{2}/i)));
             //Overwrite default durability cost to 0 if no cost, IE Trained Finesse, or if buff action
-            if(description.search(/no cost to durability/) >= 0 || description.search(/no cost to durability/) >= 0 || action.ActionCategory !== null) { 
+            if (description.search(/no cost to durability/) >= 0 || description.search(/no cost to durability/) >= 0 || action.ActionCategory !== null) {
                 durability = 0;
             }
             //Set durability to 5 for prudent actions
-            if(description.search(/half the durability/) >= 0) { 
-                    durability = 5;
+            if (description.search(/half the durability/) >= 0) {
+                durability = 5;
             }
             //Set durability to 20 for grundwork && preparatory toouch actions
-            if(description.search(/greater cost to durability/) >= 0) { 
-                    durability = 20;
+            if (description.search(/greater cost to durability/) >= 0) {
+                durability = 20;
             }
             //Set durability to 0 for non actions TODO: heart && Soul?
-            if(['Tricks of the Trade', 'Observe', `Master's Mend`].includes(action["Name"])) { 
-                    durability = 20;
+            if (['Tricks of the Trade', 'Observe', `Master's Mend`].includes(action["Name"])) {
+                durability = 20;
             }
 
             //If progress && efficiency found in description string them set to 3 digits following it
             let progressEfficiency = 0
-            if(description.search(/Efficiency/) >= 0 && description.search(/progress/) >= 0) {
+            if (description.search(/Efficiency/) >= 0 && description.search(/progress/) >= 0) {
                 progressEfficiency = parseInt(description.substring(description.search(/Efficiency/), description.length).match(/\d{3}/i));
             }
 
             //If quality && efficiency found in description string them set to 3 digits following it
             let qualityEfficiency = 0
-            if(description.search(/Efficiency/) >= 0 && description.search(/quality/) >= 0) {
+            if (description.search(/Efficiency/) >= 0 && description.search(/quality/) >= 0) {
                 qualityEfficiency = parseInt(description.substring(description.search(/Efficiency/), description.length).match(/\d{3}/i));
             }
 
@@ -299,21 +302,21 @@ class CrafterSim {
             //exists
             let specialist = action["Specialist"];
             //success rate = 100% unless otherwise stated
-            let successRate =  (description.search(/Success Rate/) < 0 ? 100: description.substring(description.search(/Success Rate/).length, description.length).match(/\d{2,3}/i)[0]);
+            let successRate = (description.search(/Success Rate/) < 0 ? 100 : description.substring(description.search(/Success Rate/).length, description.length).match(/\d{2,3}/i)[0]);
 
             let buff = (action["ActionCategory"] !== undefined && action["ActionCategory"] !== null);
 
             let steps = 0;
-            if (description.search("steps") && description.substring(description.search("steps")-20, description.search("steps")).search("three") >= 0) { 
+            if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("three") >= 0) {
                 steps = 3;
             }
-            if (description.search("steps") && description.substring(description.search("steps")-20, description.search("steps")).search("four") >= 0) { 
+            if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("four") >= 0) {
                 steps = 4;
             }
-            if (description.search("steps") && description.substring(description.search("steps")-20, description.search("steps")).search("five") >= 0) { 
+            if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("five") >= 0) {
                 steps = 5;
             }
-            if (description.search("steps") && description.substring(description.search("steps")-20, description.search("steps")).search("eight") >= 0) { 
+            if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("eight") >= 0) {
                 steps = 8;
             }
 
@@ -340,7 +343,7 @@ class CrafterSim {
 
         let qualityMultiplier = 1.0;
         if (this.activeBuffs["Innovation"] > 0 && actionType.qualityEfficiency > 0) qualityMultiplier = qualityMultiplier + .5;
-        if (actionType.name === "Byregot's Blessing" &&  this.activeBuffs["Inner Quiet"] > 0) actionType.qualityEfficiency = 100 + (20 * this.activeBuffs["Inner Quiet"]);
+        if (actionType.name === "Byregot's Blessing" && this.activeBuffs["Inner Quiet"] > 0) actionType.qualityEfficiency = 100 + (20 * this.activeBuffs["Inner Quiet"]);
 
         // Set consts to temp vars so they can be adjusted based on conditions and combos
         let conditonMultiplier = 1.0
@@ -359,39 +362,39 @@ class CrafterSim {
             if (!(actionType.comboAction === prevAction && actionType.comboBonus.search(/success rate/))) {
                 const rand = Math.floor(Math.random() * (100 - 1) + 1);
                 // simulate failure only if simulating conditions for monte carlo
-                if (actionType.successRate <= rand) { 
-                    craftSuccess = false; 
+                if (actionType.successRate <= rand) {
+                    craftSuccess = false;
                     console.log("failed!");
                 }
             }
         }
-        
+
         //if combo action was prior action and combo bonus is changing CP cost 
         if (actionType.comboAction === prevAction && actionType.comboBonus.search(/CP cost/)) {
             CPCost = actionType.comboBonus.match(/\d{2}/i)[0]
         }
-        
+
         //if combo action was not prior action and combo bonus is not 
         if (actionType.comboAction !== prevAction || !actionType.comboBonus.search(/success rate/)) {
             const rand = Math.floor(Math.random() * (100 - 1) + 1);
             // simulate failure only if simulating conditions for monte carlo
-            if (actionType.successRate <= rand) { 
-                craftSuccess = false; 
+            if (actionType.successRate <= rand) {
+                craftSuccess = false;
                 console.log("failed!");
             }
         }
 
         if (this.clvl >= this.rlvl && craftSuccess) {
             this.progress += Math.floor((Math.floor(((this.craftsmanship * 10) / this.progressDivider) + 2) * Math.floor(actionProgressEfficiency) / 100) * progressMultiplier);
-            this.quality += Math.floor((Math.floor(((this.control * 10) / this.qualityDivider) + 35) * (actionQualityEfficiency  * qualityEfficiencyMultiplier * conditonMultiplier) / 100) * qualityMultiplier);
+            this.quality += Math.floor((Math.floor(((this.control * 10) / this.qualityDivider) + 35) * (actionQualityEfficiency * qualityEfficiencyMultiplier * conditonMultiplier) / 100) * qualityMultiplier);
         }
         //TODO: Else for underleveled
 
         // decrease durability while considering waste not
         if ((this.activeBuffs["Waste Not"] === undefined && this.activeBuffs["Waste Not II"] === undefined)) {
-             this.durability -= Math.floor(actionType.durability); 
+            this.durability -= Math.floor(actionType.durability);
         }
-        else { 
+        else {
             this.durability -= Math.floor(Math.ceil(Math.floor(actionType.durability) / 10)) * 5;
         }
 
@@ -435,10 +438,23 @@ class CrafterSim {
         let step = 0;
         this.durability = this.recipeDurability;
         this.activeBuffs = {};
+        this.currMacro = macro;
         this.CP = this.maxCP;
         this.progress = 0;
         this.quality = this.startingQuality;
         var condition = "normal";
+
+        if (!macro.length > 0) {
+            return {
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            };
+        }
 
         while (this.durability > 0 && this.progress < this.difficulty && step < macro.length) {
             this.executeStep(macro[step - 1], macro[step], condition, simulateConditions);
@@ -460,18 +476,70 @@ class CrafterSim {
 
             step += 1;
         }
-
+        // TODO: Simplifiy
         if (this.progress >= this.difficulty) {
             console.log("Craft Complete! with " + this.quality + " quality.");
-            return this.quality;
+            console.log({
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            })
+            return {
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            };
         }
         else if (this.durability <= 0) {
             console.log("Craft Failed!");
-            return 0;
+            console.log({
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            })
+            return {
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            };
         }
         else {
             console.log("Craft Incomplete!");
-            return 0;
+            console.log({
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            })
+
+            return {
+                currBuffs: this.activeBuffs,
+                durability: this.durability,
+                progress: this.progress,
+                difficulty: this.difficulty,
+                quality: this.quality,
+                recipeQuality: this.recipeQuality,
+                currCP: this.CP
+            };
         }
     }
 
