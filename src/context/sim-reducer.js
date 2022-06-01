@@ -5,6 +5,7 @@ const craftSim = new CrafterSim("", 0, 2000, 2000, 500, 90, 0);
 craftSim.loadActions();
 
 const initialState = {
+  craftSim: craftSim,
   recipe: "",
   macro: [],
   Level: 90,
@@ -20,13 +21,14 @@ const initialState = {
   tincture: {
     Craftsmanship: 0,
     Control: 0,
-    CP: 0
+    CP: 0,
+    LevelItem: 0
   },
   macroState: {
     currBuffs: {},
     durability: 0,
     progress: 0,
-    difficulty: 0,
+    recipeDifficulty: 0,
     quality: 0,
     recipeQuality: 0,
     currCP: 0
@@ -102,7 +104,8 @@ const reducerFunction = (state = initialState, action) => {
         meal: {
           Craftsmanship: parseInt(action.Craftsmanship),
           Control: parseInt(action.Control),
-          CP: parseInt(action.CP)
+          CP: parseInt(action.CP),
+          LevelItem: parseInt(action.LevelItem)
         },
         macroState: craftSim.executeMacro(state.macro, false, false)
       }
@@ -130,8 +133,6 @@ const reducerFunction = (state = initialState, action) => {
         macroState: craftSim.executeMacro([...state.macro, action.action], false, false)
       }
     case REMOVE_MACRO_ACTION:
-      
-    console.log(action.position)
       return {
         ...state,
         macro: [

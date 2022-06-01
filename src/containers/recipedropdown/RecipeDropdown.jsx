@@ -97,8 +97,8 @@ class RecipeDropdown extends Component {
         this.setState({ isActive: false });
         let recipeInput = document.getElementById("recipeInput")
         recipeInput.value = newValue;
-        this.props.simulatorUpdate();
-        this.props.simulatorRefresh();
+        // this.props.simulatorUpdate();
+        // this.props.simulatorRefresh();
     }
 
     render() {

@@ -25,7 +25,8 @@ export function setMeal(meal) {
         type: SET_MEAL,
         Craftsmanship: meal.Craftsmanship,
         Control: meal.Control,
-        CP: meal.CP
+        CP: meal.CP,
+        LevelItem: meal.LevelItem
     }
 }
 

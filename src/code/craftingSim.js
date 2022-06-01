@@ -449,7 +449,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -483,7 +483,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -492,7 +492,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -504,7 +504,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -513,7 +513,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -525,7 +525,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -535,7 +535,7 @@ class CrafterSim {
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP

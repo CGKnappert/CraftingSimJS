@@ -13,11 +13,10 @@ function CrafterActions(props) {
   const addAction = (event) => {
     console.log(event)
     dispatch(addMacroAction(event));
-    props.simulatorUpdate();
   }
 
   function orderingFunction(a, b) {
-    console.log(a, b)
+    // console.log(a, b)
     // if (b.Specialist === 1) {
     //   //put a before b
     //   return -1;
