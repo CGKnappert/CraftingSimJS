@@ -1,50 +1,29 @@
 import React, { Component } from 'react';
-import CrafterSim from '../../code/craftingSim.js'
 import bunnyLogo from '../../assets/Bunny Head.png'
 import './navbar.css';
+import { resetCrafterStats, setRecipe } from '../../context/index'
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, NavLink, Routes, Link } from 'react-router-dom'
-import { CraftStats, CraftSolver } from '../../containers';
-import { CraftingSimulatorPage } from '../../pages';
+import { CraftingSimulatorPage, CraftStats, CraftSolver } from '../../pages';
 
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
-    let tempSim = new CrafterSim("", 0, 2000, 2000, 500, 90, 0);
-    tempSim.loadActions();
-    this.state = {
-      recipe: "",
-      macro: [],
-      mainSim: tempSim
-    };
   }
 
-  setRecipe = (value) => {
-      let tempVaue = value;
-      this.setState( {recipe: tempVaue} );
-      console.log("Navbar: " + tempVaue);
-    
-      // try {
-      //     await Asyncstorage.setItem('recipe', tempVaue);
-      // }
-      // catch (err) {
-      //     console.log("setRecipe: " + err);
-      // }
+  componentDidUpdate() {
+    console.log("NavBar");
+    console.log(this.props.recipe);
+    let tempRecipe = this.props.recipe;
+    if (tempRecipe) {
+      console.log(tempRecipe);
+      console.log(this.props.macro);
+      // this.props.setRecipe(tempRecipe);
+      // this.props.resetCrafterStats();
+      // this.forceUpdate();
+    }
   }
-
-  setMacro = (value) => {
-      let tempVaue = value;
-      this.setState( {macro: tempVaue} );
-      console.log("Navbar: " + tempVaue);
-    
-      // try {
-      //     await Asyncstorage.setItem('recipe', tempVaue);
-      // }
-      // catch (err) {
-      //     console.log("setRecipe: " + err);
-      // }
-  }
-
   
   render() {
     return (
@@ -67,8 +46,8 @@ class Navbar extends Component {
       </div>
       <div className="stickysim-body">
         <Routes>
-            <Route exact path="/" element={<CraftingSimulatorPage setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
-            <Route path="/statistics" element={<CraftStats setRecipeFunction={ this.setRecipe } setMacroFunction={ this.setMacro } currRecipe={ this.state.recipe } currMacro={ this.state.macro } craftSim={ this.state.mainSim } />} />
+            <Route exact path="/" element={<CraftingSimulatorPage />} />
+            <Route path="/statistics" element={<CraftStats />} />
             <Route path="/solver" element={<CraftSolver />} />
         </Routes>
       </div>
@@ -77,4 +56,18 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar
+const mapStateToFunction = state => {
+  return {
+    recipe: state.recipe,
+    macro: state.macro,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    resetCrafterStats: () => dispatch(resetCrafterStats()),
+    setRecipe: () => dispatch(setRecipe())
+  }
+}
+
+export default connect(mapStateToFunction, mapDispatchToProps)(Navbar);

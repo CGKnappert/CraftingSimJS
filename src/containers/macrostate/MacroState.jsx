@@ -8,11 +8,12 @@ class MacroState extends Component {
 
     componentDidMount = () => {
         this._isMounted = true;
+        
         this.simulatorUpdate();
     }
 
     componentDidUpdate = () => {
-        this.simulatorUpdate()
+        this.simulatorUpdate();
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -31,7 +32,7 @@ class MacroState extends Component {
     // }
 
     simulatorUpdate = () => {
-        console.log(this.props)
+        console.log(this.props);
         try {
             const currProgress = document.querySelector('.crafting-sim-progress-bar-current');
             currProgress.style.width = Math.min(((this.props.macroState.progress / this.props.macroState.recipeDifficulty) * 100), 100) + '%';
@@ -52,7 +53,7 @@ class MacroState extends Component {
             CPHeader.innerHTML = ('<h3>' + (this.props.macroState.currCP) + ' / ' + (this.props.CP + this.props.mealCP + this.props.tinctureCP) + '</h3>');
 
         } catch (error) {
-            console.log("Not rendered yet: " + error)
+            console.log("Not rendered yet: " + error);
         }
     }
 
@@ -106,6 +107,7 @@ class MacroState extends Component {
 
 const mapStateToFunction = state => {
     return {
+        recipe: state.recipe,
         CP: state.CP,
         mealCP: state.meal.CP,
         tinctureCP: state.tincture.CP,

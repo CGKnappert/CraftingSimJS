@@ -1,10 +1,7 @@
-import { SET_RECIPE, SET_MACRO, SET_MEAL, SET_TINCTURE, SET_CRAFTER_CRAFTSMANSHIP, SET_CRAFTER_CONTROL, SET_CRAFTER_CP, SET_CRAFTER_LEVEL, SET_CRAFTER_SPECIALIST, ADD_MACRO_ACTION, REMOVE_MACRO_ACTION } from './sim-actions';
-import { createStore, applyMiddleware, compose } from "redux";
-import reducerFunction from "./sim-reducer";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { SET_RECIPE, SET_MACRO, SIMULATE_MACRO, SET_MEAL, SET_TINCTURE, RESET_CRAFTER_STATS, SET_CRAFTER_CRAFTSMANSHIP, SET_CRAFTER_CONTROL, SET_CRAFTER_CP, SET_CRAFTER_LEVEL, SET_CRAFTER_SPECIALIST, ADD_MACRO_ACTION, REMOVE_MACRO_ACTION } from './sim-actions';
 
 export function setRecipe(recipe) {
-    console.log("index: " + recipe);
+    console.log("Index: " + recipe);
     return {
         type: SET_RECIPE,
         recipe: recipe
@@ -16,6 +13,13 @@ export function setMacro(macro) {
     return {
         type: SET_MACRO,
         macro: macro
+    }
+}
+
+export function simulateMacro() {
+    console.log("Index: Simulate Macro")
+    return {
+        type: SIMULATE_MACRO
     }
 }
 
@@ -37,6 +41,13 @@ export function setTincture(tincture) {
         Craftsmanship: tincture.Craftsmanship,
         Control: tincture.Control,
         CP: tincture.CP
+    }
+}
+
+export function resetCrafterStats() {
+    console.log("Index: Rest Crafter Stats")
+    return {
+        type: RESET_CRAFTER_STATS
     }
 }
 

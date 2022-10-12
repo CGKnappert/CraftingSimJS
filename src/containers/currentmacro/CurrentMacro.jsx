@@ -7,22 +7,20 @@ class CurrentMacro extends Component {
 
     constructor(props) {
         super(props);
-        const macroString = "";
         this.state = {
             showExport: false,
-            showImport: false
+            showImport: false,
+            macroString: ""
         }
     }
-    // const macro = useSelector((state) => state.macro);
-    // const dispatch = useDispatch();
 
     removeAction = (event) => {
         this.props.removeMacroAction(event);
     }
 
     closeOverlay = () => {
-        this.state.showImport = false;
-        this.state.showExport = false;
+        this.state.showImport.setState(false);
+        this.state.showExport.setState(false);
         console.log("close");
         this.forceUpdate();
     }
@@ -36,17 +34,15 @@ class CurrentMacro extends Component {
             for (let action of jsonString) {
                 if (action["Name"] === step) {
                     if ((action["ActionCategory"] !== undefined && action["ActionCategory"] !== null)) {
-                        macroStringTemp += ("/ac " + step + " <wait.2>" + "\n");
+                        macroStringTemp += `/ac ${step} <wait.2>\n`;
                     }
                     else {
-                        macroStringTemp += ("/ac " + step + " <wait.3>" + "\n")
+                        macroStringTemp += `/ac + ${step} <wait.3>\n`;
                     }
                 }
             }
         }
-        this.macroString = macroStringTemp;
-
-        this.setState({ showExport: true })
+        this.setState({ showExport: true }, {macroString: macroStringTemp})
     }
 
 
@@ -57,7 +53,7 @@ class CurrentMacro extends Component {
         this.forceUpdate();
     }
 
-    openImportOverlay = (value) => {
+    openImportOverlay = () => {
         this.setState({ showImport: true });
     }
 

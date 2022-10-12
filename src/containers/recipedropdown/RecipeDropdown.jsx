@@ -1,6 +1,5 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import './recipedropdown.css';
-import Asyncstorage from '@react-native-async-storage/async-storage';
 import { setRecipe } from '../../context/index'
 import { connect } from 'react-redux';
 
@@ -26,6 +25,7 @@ class RecipeDropdown extends Component {
                 }
             }
             catch {
+                // TODO
             }
         }
         allRecipesVerifiedTemp = [...new Map(allRecipesVerifiedTemp.map(item => [item.Name, item])).values()];
@@ -35,22 +35,21 @@ class RecipeDropdown extends Component {
             recipesAll: allRecipesVerifiedTemp
         })
 
-        if (this.props.recipe !== "") {
-            let recipeInput = document.getElementById("recipeInput")
+        var recipeInput = document.getElementById("recipeInput");
+        if (this.props.recipe) {
             recipeInput.value = this.props.recipe;
         }
 
-        var input = document.getElementById("recipeInput");
-        input.onfocus = () => {
-            if (input.value === 'Select a recipe') {
-                input.value = '';
+        recipeInput.onfocus = () => {
+            if (recipeInput.value === 'Select a recipe') {
+                recipeInput.value = '';
             }
             this.filterSearch();
             this.setState({ isActive: true });
         }
-        input.onblur = () => {
-            if (input.value === '') {
-                input.value = 'Select a recipe';
+        recipeInput.onblur = () => {
+            if (recipeInput.value === '') {
+                recipeInput.value = 'Select a recipe';
             }
             this.setState({ isActive: false });
         }
@@ -97,8 +96,6 @@ class RecipeDropdown extends Component {
         this.setState({ isActive: false });
         let recipeInput = document.getElementById("recipeInput")
         recipeInput.value = newValue;
-        // this.props.simulatorUpdate();
-        // this.props.simulatorRefresh();
     }
 
     render() {
@@ -112,6 +109,7 @@ class RecipeDropdown extends Component {
                     id="recipeInput"
                     autoComplete="off"
                     spellCheck="false"
+                    // value={((this.props.recipe !== "" && typeof this.props.recipe === 'string') ? this.props.recipe : "Select a recipe")}
                 />
                 <img src={require(`../../assets/clear.png`)} className='recipe-dropdown-clear-icon' alt='clear' onClick={this.clearSearch} />
                 {this.state.isActive &&

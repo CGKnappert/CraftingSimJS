@@ -187,4 +187,8 @@
     width: calc(var(--main-scalar) * 4px);
 }
 
+.crafting-sim-macro-actions.dragging {
+    opacity: .5;
+}
+
 /*#endregion*/

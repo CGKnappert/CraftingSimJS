@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './crafteractions.css';
 import { addMacroAction } from '../../context/index'
 
@@ -7,7 +7,7 @@ import { addMacroAction } from '../../context/index'
 function CrafterActions(props) {
   const craftActions = require('../../JSON/CraftAction.json');
 
-  const recipe = useSelector((state) => state.recipe);
+  // const recipe = useSelector((state) => state.recipe);
   const dispatch = useDispatch();
 
   const addAction = (event) => {

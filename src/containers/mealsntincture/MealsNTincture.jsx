@@ -9,6 +9,8 @@ class MealsNTincture extends Component {
         this.state = {
             mealArray: [],
             tinctureArray: [],
+            currMeal: null,
+            currTincture: null,
             isMealHQ: false,
             isTinctureHQ: false,
             isMealActive: false,
@@ -19,6 +21,7 @@ class MealsNTincture extends Component {
     componentDidMount = () => {
         let mealsTemp = require('../../JSON/Meals.json');
         let tinctureTemp = require('../../JSON/Tinctures.json');
+        console.log(this.props.meal.Name)
 
         this.setState({
             mealArray: mealsTemp.Results,
@@ -28,7 +31,7 @@ class MealsNTincture extends Component {
         var mealInput = document.getElementById("mealInput");
         mealInput.onfocus = () => {
             if (mealInput.value === 'Select a meal') {
-                mealInput.value = '';
+                mealInput.value = this.props.meal.Name;
             }
             this.setState({ isMealActive: true });
         }
@@ -43,7 +46,7 @@ class MealsNTincture extends Component {
         var tinctureInput = document.getElementById("tinctureInput");
         tinctureInput.onfocus = () => {
             if (tinctureInput.value === 'Select a tincture') {
-                tinctureInput.value = '';
+                mealInput.value = this.props.tincture.Name;
             }
             this.setState({ isTinctureActive: true });
         }
@@ -66,6 +69,7 @@ class MealsNTincture extends Component {
 
             this.props.setMeal(
                 {
+                    Name: this.state.currMeal.Name,
                     Craftsmanship: (this.state.currMeal.Bonuses.Craftsmanship !== undefined) ? (isHQ ? this.state.currMeal.Bonuses.Craftsmanship.MaxHQ : this.state.currMeal.Bonuses.Craftsmanship.Max) : 0,
                     Control: (this.state.currMeal.Bonuses.Control !== undefined) ? (isHQ ? this.state.currMeal.Bonuses.Control.MaxHQ : this.state.currMeal.Bonuses.Control.Max) : 0,
                     CP: (this.state.currMeal.Bonuses.CP !== undefined) ? (isHQ ? this.state.currMeal.Bonuses.CP.MaxHQ : this.state.currMeal.Bonuses.CP.Max) : 0,
@@ -98,9 +102,9 @@ class MealsNTincture extends Component {
                 this.setState({
                     isMealActive: false
                 });
-
                 this.props.setMeal(
                     {
+                        Name: newValue,
                         Craftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
                         Control: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
                         CP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0,
@@ -137,6 +141,7 @@ class MealsNTincture extends Component {
 
                 this.props.setTincture(
                     {
+                        Name: newValue,
                         Craftsmanship: (tincture.Bonuses.Craftsmanship !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.Craftsmanship.MaxHQ : tincture.Bonuses.Craftsmanship.Max) : 0,
                         Control: (tincture.Bonuses.Control !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.Control.MaxHQ : tincture.Bonuses.Control.Max) : 0,
                         CP: (tincture.Bonuses.CP !== undefined) ? (this.state.isTinctureHQ ? tincture.Bonuses.CP.MaxHQ : tincture.Bonuses.CP.Max) : 0
@@ -158,6 +163,7 @@ class MealsNTincture extends Component {
 
             this.props.setTincture(
                 {
+                    Name: this.state.currTincture.Name,
                     Craftsmanship: (this.state.currTincture.Bonuses.Craftsmanship !== undefined) ? (isHQ ? this.state.currTincture.Bonuses.Craftsmanship.MaxHQ : this.state.currTincture.Bonuses.Craftsmanship.Max) : 0,
                     Control: (this.state.currTincture.Bonuses.Control !== undefined) ? (isHQ ? this.state.currTincture.Bonuses.Control.MaxHQ : this.state.currTincture.Bonuses.Control.Max) : 0,
                     CP: (this.state.currTincture.Bonuses.CP !== undefined) ? (isHQ ? this.state.currTincture.Bonuses.CP.MaxHQ : this.state.currTincture.Bonuses.CP.Max) : 0
