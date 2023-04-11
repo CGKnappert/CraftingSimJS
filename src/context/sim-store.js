@@ -10,7 +10,7 @@ const craftSim = new CrafterSim("", 0, 2000, 2000, 500, 90, 0);
 craftSim.loadActions();
 
 const initialState = {
-    craftSim: craftSim,
+    // craftSim: craftSim,
     recipe: "",
     macro: [],
     simulatedMacro: [],
@@ -35,6 +35,7 @@ const initialState = {
     macroState: {
       currBuffs: {},
       durability: 0,
+      recipeDurability: 0,
       progress: 0,
       recipeDifficulty: 0,
       quality: 0,

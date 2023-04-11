@@ -1,0 +1,16 @@
+:root {
+    --global-pink: rgb(255, 0, 191);
+    --global-gray: #333;
+    --global-grey: #333;
+    --global-teal: rgba(56, 243, 255, 1);
+
+    --global-width: 80%;
+    --global-min-width: 650px;
+    --main-scalar: 12;
+
+    --global-header-font-size: 25px;
+    --global-header-height: 40px;
+    --global-body-font-size: 20px;
+    --global-body-height: 30px;
+  }
+  

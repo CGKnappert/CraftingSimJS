@@ -11,12 +11,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 32,
 		"Description": "Increases the efficiency of next <span style=\"color:#ff7b1a;\">Touch</span> action by 100%. Effect active for three steps.",
 		"ID": 262,
 		"Icon": "/i/001000/001955.png",
 		"Name": "Great Strides",
-		"Specialist": null
+		"Specialist": 0
 	},
 	{
 		"ActionCategory": {
@@ -30,12 +30,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 96,
 		"Description": "Restores 5 points of <span style=\"color:#ffff66;\">durability</span> after each step for the next eight steps.",
 		"ID": 4576,
 		"Icon": "/i/001000/001985.png",
 		"Name": "Manipulation",
-		"Specialist": null
+		"Specialist": 0
 	},
 	{
 		"ActionCategory": {
@@ -49,12 +49,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 56,
 		"Description": "Reduces loss of <span style=\"color:#ffff66;\">durability</span> by 50% for the next four steps.",
 		"ID": 4633,
 		"Icon": "/i/001000/001992.png",
 		"Name": "Waste Not",
-		"Specialist": null
+		"Specialist": 0
 	},
 	{
 		"ActionCategory": {
@@ -68,12 +68,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 98,
 		"Description": "Reduces loss of <span style=\"color:#ffff66;\">durability</span> by 50% for the next eight steps.",
 		"ID": 4641,
 		"Icon": "/i/001000/001993.png",
 		"Name": "Waste Not II",
-		"Specialist": null
+		"Specialist": 0
 	},
 	{
 		"ActionCategory": {
@@ -87,12 +87,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 18,
 		"Description": "Increases efficiency of <span style=\"color:#ff7b1a;\">Touch</span> actions by 50% for the next four steps.",
 		"ID": 19006,
 		"Icon": "/i/001000/001987.png",
 		"Name": "Innovation",
-		"Specialist": null
+		"Specialist": 0
 	},
 	{
 		"ActionCategory": {
@@ -106,12 +106,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 1,
 		"Description": "The next action that would complete item synthesis will instead leave one <span style=\"color:#ffff66;\">progress</span> point remaining.\n\nEffect active for five steps.",
 		"ID": 19014,
 		"Icon": "/i/001000/001983.png",
 		"Name": "Final Appraisal",
-		"Specialist": null
+		"Specialist": 1
 	},
 	{
 		"ActionCategory": {
@@ -125,12 +125,12 @@
 		"ClassJobCategory": {
 			"Name": "ARM"
 		},
-		"Cost": null,
+		"Cost": 18,
 		"Description": "Increases efficiency of <span style=\"color:#ff7b1a;\">Synthesis</span> actions by 50% for the next four steps.",
 		"ID": 19299,
 		"Icon": "/i/001000/001995.png",
 		"Name": "Veneration",
-		"Specialist": null
+		"Specialist": 0
 	},
 	{
 		"ActionCategory": null,

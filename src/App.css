@@ -3,11 +3,21 @@
     padding: 0;
     margin: 0;
     scroll-behavior: smooth;
+}
+
+:global(.App) {
 
 }
 
 body {
     background: var(--color-bg);
+    height: 100%;
+    width: 100%;
+    
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
 }
 
 a {
@@ -35,6 +45,7 @@ a {
     /* global 94%+ browsers support */
     background:linear-gradient(147deg, rgba(251, 63, 255, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(56, 243, 255, 1) 100%);
 
+    padding-bottom: 50px;
 }
 
 .gradient__text {
@@ -45,11 +56,11 @@ a {
 }
 
 .section__padding {
-    padding: 4rem 6rem;
+    /* padding: 4rem 6rem; */
 }
 
 .section__margin {
-    margin: 4rem 6rem;
+    /* margin: 4rem 6rem; */
 }
 
 @-webkit-keyframes slide-left {
@@ -96,18 +107,18 @@ a {
 
   @media screen and (max-width: 700px) {
     .section__padding {
-        padding: 4rem;
+        /* padding: 4rem; */
     }
     .section__margin {
-        margin: 4rem;
+        /* margin: 4rem; */
     }
   }
 
   @media screen and (max-width: 550px) {
     .section__padding {
-        padding: 4rem 2rem;
+        /* padding: 4rem 2rem; */
     }
     .section__margin {
-        margin: 4rem 2rem;
+        /* margin: 4rem 2rem; */
     }
   }

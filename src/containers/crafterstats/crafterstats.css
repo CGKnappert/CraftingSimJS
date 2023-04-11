@@ -1,5 +1,5 @@
 :root {
-    --main-scalar: 12;
+
 }
 
 * {
@@ -9,75 +9,68 @@
 }
 
 .crafting-sim-stats-and-recipe {
-    height: 200px;
-    width: 80%;
-    min-width: 650px;
+    height: auto;
+    width: var(--global-width);
+    min-width: var(--global-min-width);
     margin: 20px auto;
     padding: 10px 10px 10px 10px;
+    position: relative;
+    display: table;
 
     border: solid;
     border-width: 4px;
-    border-color: rgb(0, 0, 0);
+    border-color: black;
     border-radius: 20px;
-    background: #333;
+    background: var(--global-grey);
 
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-font-smoothing: antialiased !important;
-    text-rendering: optimizelegibility !important;
     letter-spacing: .03em;
     color: #fff;
 }
 
 .crafting-sim-recipe-container {
-    min-width: 250px;
-    width: 39%;
-    right: 0;
-    left: 60%;
-    position: absolute;
+    min-width: 450px;
+    width: 40%;
+    display: table-cell;
     align-items: center;
-    /* background: tomato; */
+    top: 0px;
+    vertical-align: top;
 }
 
-.crafting-sim-recipe-title {
-    height: 40px;
-    width: 420px;
-    direction: rtl;
-    margin-right: 30%;
-    /* margin: 0 auto; */
-    text-align: right;
-    float: right;
+.crafting-sim-recipe-title h3 {
+    height: var(--global-body-height);
+    font-size: var(--global-body-font-size);
+    width: auto;
+    margin: auto;
+    top: 0px;
+    text-align: center;
 }
 
 .crafting-sim-recipe-icon {
     height: 130px;
     width: 130px;
     position: relative;
-    margin: 0 auto;
+    margin: auto;
 }
 
 .crafting-sim-recipe-icon-img {
     height: 100%;
     width: 100%;
-    display: block;
 }
 
 .crafting-sim-stats-container {
-    height: 100%;
-    width: 60%;
-    min-width: 350px;
+    display: table-cell;
+    min-width: 300px;
+    /* width: 900px; */
     float: left;
     left: 0;
     position: relative;
-    /* background: rgb(92, 81, 68); */
 }
 
 .crafting-sim-crafter-stats {
-    display: grid;
-    grid-template-columns: 260px 260px;
-    grid-row: 150px;
+    font-size: var(--global-body-font-size);
     right: 0;
-    /* grid-row: 150px 150px; */
+    display: grid;
+    grid-template-columns: auto auto auto;
 }
 
 .crafting-sim-crafter-stats-craftsmanship {
@@ -95,6 +88,7 @@
 .crafting-sim-crafter-stats label {
     display: inline-block;
     transform: translateX(0);
+    font-size: 18px;
     margin-top: 0px;
     margin-right: 20px;
     margin-left: 20px;
@@ -105,14 +99,14 @@
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     overflow: hidden;
-    -webkit-appearance: none;
 }
 
 .crafting-sim-crafter-stats input {
     display: inline-block;
     width: 80px;
-    margin: 40px 0px 0px 0px;
+    margin: 20px 0px 0px 0px;
     padding: 10px 0px 10px 15px;
+    font-size: 18px;
     font-weight: 400;
     border: 0;
     border-radius: 3px;
@@ -122,11 +116,13 @@
 }
 
 .crafting-sim-crafter-stats-title {
-    position: absolute;
+    height: var(--global-header-height);
+    font-size: var(--global-header-font-size);
+    margin-left: 15px;
 }
 
 
-@media only screen and (min-width: 880px) and (max-width: 1400px) {
+@media only screen and (min-width: 1280px) and (max-width: 1600px) {
     .crafting-sim-stats-and-recipe{
         height: 200px;
     }
@@ -135,7 +131,7 @@
     }
 }
 
-@media only screen and (max-width: 880px) {
+@media only screen and (max-width: 1280px) {
     .crafting-sim-stats-and-recipe{
         height: 290px;
     }
@@ -144,7 +140,7 @@
     }
 }
 
-@media only screen and (min-width: 1400px) {
+@media only screen and (min-width: 1600px) {
     .crafting-sim-crafter-stats {
         grid-template-columns: 260px 260px 260px;
     }

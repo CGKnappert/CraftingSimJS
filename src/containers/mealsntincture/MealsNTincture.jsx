@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './mealsntincture.css';
 import { setMeal, setTincture } from '../../context/index'
 import { connect } from 'react-redux';
+const debug = 0;
 
 class MealsNTincture extends Component {
     constructor(props) {
@@ -19,9 +20,11 @@ class MealsNTincture extends Component {
     };
 
     componentDidMount = () => {
+        if (debug) console.log("MealsNTinct DidMount")
+        if (debug) console.log(this.props.tincture, this.props.meal)
+
         let mealsTemp = require('../../JSON/Meals.json');
         let tinctureTemp = require('../../JSON/Tinctures.json');
-        console.log(this.props.meal.Name)
 
         this.setState({
             mealArray: mealsTemp.Results,
@@ -36,12 +39,14 @@ class MealsNTincture extends Component {
             this.setState({ isMealActive: true });
         }
 
-        // mealInput.onblur = () => {
-        //     if (mealInput.value === '') {
-        //         mealInput.value = 'Select a meal';
-        //     }
-        //     this.setState({ isMealActive: false });
-        // }
+        mealInput.onblur = () => {
+            if (mealInput.value === '') {
+                mealInput.value = 'Select a meal';
+            }
+            this.setState({ isMealActive: false });
+        }
+
+
 
         var tinctureInput = document.getElementById("tinctureInput");
         tinctureInput.onfocus = () => {
@@ -57,9 +62,51 @@ class MealsNTincture extends Component {
             }
             this.setState({ isTinctureActive: false });
         }
+
+        for (const tinct of this.state.tinctureArray) {
+            if (tinct.Name === this.props.tincture.Name) {
+                if (debug) console.log("MealsNTinct DidMount tinct found: " + tinct)
+                this.setState({
+                    currTincture: tinct,
+                });
+            }
+        }
     }
 
+
     toggleMealHQ = () => {
+        if (debug) console.log("MealsNTinct ToggleMealHQ: " + this.props.meal.Name)
+
+        if (this.props.meal && this.props.meal.Name !== "") {
+            for (const meal of this.state.mealArray) {
+                if (meal.Name === this.props.meal.Name) {
+                    if (debug) console.log("MealsNTinct meal found: " + meal)
+                    this.setState({
+                        currMeal: meal,
+                    });
+                    
+                    if (meal !== undefined) {
+                       let isHQ = !this.state.isMealHQ;
+                       this.setState({
+                           isMealActive: false,
+                           isMealHQ: !this.state.isMealHQ
+                       });
+    
+                       this.props.setMeal(
+                           {
+                               Name: meal.Name,
+                               Craftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (isHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
+                               Control: (meal.Bonuses.Control !== undefined) ? (isHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
+                               CP: (meal.Bonuses.CP !== undefined) ? (isHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0,
+                               LevelItem: meal.LevelItem
+                           }
+                       )
+                       
+                }
+            }
+        }
+    }
+    else {
         if (this.state.currMeal !== undefined) {
             let isHQ = !this.state.isMealHQ;
             this.setState({
@@ -78,12 +125,17 @@ class MealsNTincture extends Component {
             )
         }
     }
+    this.forceUpdate();
+    }
 
     clearMealSearch = () => {
+        if (debug) console.log("MealsNTinct ClearMeal") 
+
         let mealInput = document.getElementById("mealInput");
         mealInput.value = '';
         this.props.setMeal(
             {
+                Name: "",
                 Craftsmanship: 0,
                 Control: 0,
                 CP: 0
@@ -92,16 +144,26 @@ class MealsNTincture extends Component {
     }
 
     updateMeal = (value) => {
-        console.log("Set food" + value)
+        if (debug) console.log("MealsNTinct Set food " + value)
         const newValue = value;
         let mealInput = document.getElementById("mealInput");
 
         mealInput.value = newValue;
         for (const meal of this.state.mealArray) {
             if (meal.Name === newValue) {
+                if (debug) console.log(meal)
                 this.setState({
-                    isMealActive: false
+                    isMealActive: false,
+                    currMeal: meal,
                 });
+                
+                if (debug) console.log({
+                    Name: newValue,
+                    Craftsmanship: (meal.Bonuses.Craftsmanship !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Craftsmanship.MaxHQ : meal.Bonuses.Craftsmanship.Max) : 0,
+                    Control: (meal.Bonuses.Control !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.Control.MaxHQ : meal.Bonuses.Control.Max) : 0,
+                    CP: (meal.Bonuses.CP !== undefined) ? (this.state.isMealHQ ? meal.Bonuses.CP.MaxHQ : meal.Bonuses.CP.Max) : 0,
+                    LevelItem: meal.LevelItem
+                })
                 this.props.setMeal(
                     {
                         Name: newValue,
@@ -134,6 +196,7 @@ class MealsNTincture extends Component {
         
         for (const tincture of this.state.tinctureArray) {
             if (tincture.Name === newValue) {
+                if (debug) console.log(tincture)
                 this.setState({
                     isTinctureActive: false,
                     currTincture: tincture,
@@ -153,13 +216,14 @@ class MealsNTincture extends Component {
     }
 
     toggleTinctureHQ = () => {
-        console.log(this.state.currTincture);
+        if (debug) console.log("MealsNTinct ToggleTinctHQ")
         if (this.state.currTincture !== undefined) {
             let isHQ = !this.state.isTinctureHQ;
             this.setState({
                 isTinctureActive: false,
                 isTinctureHQ: !this.state.isTinctureHQ
             });
+            if (debug) console.log(this.state.currTincture)
 
             this.props.setTincture(
                 {
@@ -171,6 +235,7 @@ class MealsNTincture extends Component {
                 }
             )
         }
+        this.forceUpdate();
     }
 
     updateTinctureSearch = () => {
@@ -194,10 +259,13 @@ class MealsNTincture extends Component {
     render() {
         return (
             <div className="crafting-sim-meal-and-tincture-container">
+            <div className='crafting-sim-meal-and-tincture-title'><h3>Consumables</h3></div>
+            <div className='crafting-sim-meal-and-tincture-empty-cell'></div>
                 <div className="crafting-sim-meal-container">
                     <div className="crafting-sim-meal-dropdown-search-title"><p>Meals</p></div>
                     <input className="crafting-sim-meal-dropdown-button"
                         onChange={() => this.updateMealSearch()}
+                        value={((this.props.meal.Name) ? this.props.meal.Name : "Select a meal")}
                         type="text"
                         name="mealInput"
                         id="mealInput"
@@ -242,6 +310,7 @@ class MealsNTincture extends Component {
                     <div className="crafting-sim-tincture-dropdown-search-title"><p>Tinctures</p></div>
                     <input className="crafting-sim-tincture-dropdown-button"
                         onChange={() => this.updateTinctureSearch()}
+                        value={((this.props.tincture.Name) ? this.props.tincture.Name : "Select a tincture")}
                         type="text"
                         name="tinctureInput"
                         id="tinctureInput"

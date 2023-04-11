@@ -1,5 +1,5 @@
 .stickysim__header_container {
-    /* display: flex; */
+    
 }
 
 .stickysim__header-content {
@@ -12,31 +12,19 @@
     margin: 5rem;
 }
 
-.stickysim__header-content h1 {
-    font-family: var(--font-family);
-    font-weight: 800;
-    
-    font-size: 50px;
-    line-height: 75px;
-    letter-spacing: -0.04em;
-}
-
-.stickysim__header-image {
-    align-items: right;
-}
-
 .stickysim__craft-classes {
     display: flex;
     justify-content: center;
+    height: 10%;
 }
 
 .stickysim__craft-classes img {
-    height: 120px;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    
+    margin-left: 1.5%;
+    margin-right: 1.5%;
     align-self: center;
 
-    border-color: rgb(0, 0, 0);
+    border-color: black;
     border-radius: 16px;
     border-width: medium;
     border-style: solid;
@@ -44,9 +32,29 @@
 }
 
 .craft-classes-selected {
-    background-image: linear-gradient(147deg, rgba(56, 243, 255, 1) 10%, rgba(0, 0, 0, 1) 50%, rgba(251, 63, 255, 1) 90%);
+    background-image: linear-gradient(147deg, var(--global-teal) 10%, black 50%, var(--global-pink) 90%);
 }
 
 .craft-classes-unselected {
-    background-color: rgb(97, 97, 97);
+    background-color: var(--global-grey);
+}
+
+
+
+@media only screen and (min-width: 2001px) {
+    .stickysim__craft-classes img {
+        height: 180px;
+    }
+}
+
+@media only screen and (min-width: 1400px) and (max-width: 2000px) {
+    .stickysim__craft-classes img {
+        height: 140px;
+    }
+}
+
+@media only screen and (max-width: 1399px) {
+    .stickysim__craft-classes img {
+        height: 100px;
+    }
 }

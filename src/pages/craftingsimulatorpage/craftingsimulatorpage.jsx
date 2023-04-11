@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './craftingsimulatorpage.css';
-import { CrafterActions, CrafterStats, MacroState, RecipeDropdown, MealsNTincture, ClassSelector, CurrentBuffs, CurrentMacro } from '../../containers';
+import { CrafterActions, CrafterStats, MacroState, RecipeDropdown, MealsNTincture, ClassSelector, CurrentMacro } from '../../containers';
 import images from './crafters.js';
 
 
@@ -33,10 +33,6 @@ class CraftingSimulatorPage extends Component {
         console.log("CraftSim render called")
         return (
             <div>
-                <div className='stickysim__header-content'>
-                    <h1 className='gradient__text'>FFXIV Crafting Simulator</h1>
-                </div>
-
                 <div className='stickysim__class-selector'>
                     <ClassSelector setToggleClass={this.setToggleClass} classImages={this.state.classImages} />
                 </div>
@@ -55,10 +51,6 @@ class CraftingSimulatorPage extends Component {
 
                 <div className='stickysim__macro-state'>
                     <MacroState />
-                </div>
-
-                <div className='stickysim__current-buffs'>
-                    <CurrentBuffs />
                 </div>
 
                 <div className='stickysim__current-macro'>

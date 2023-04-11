@@ -1,34 +1,169 @@
+@import '../../../src/global.css';
+
+:root {
+    --box-whisker-color: var(--global-pink);
+}
+
 .craftstats-container {
-    height: 100vh;
-    width: 80%;
+    height: 100%;
+    width: var(--global-width);
+    min-width: var(--global-min-width);
     margin: 0 auto;
     position: relative;
+
+    font-weight: 500;
+    font-size: large;
+}
+
+.craftstats-container-recipe {
+    position: relative;
+    height: 100%; 
+
+    margin: 20px auto;
+    padding: 20px 20px 20px 20px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+    letter-spacing: .03em;
+    color: #fff;
+    text-shadow:
+        0.05em 0 black,
+        0 0.05em black,
+        -0.05em 0 black,
+        0 -0.05em black,
+        -0.05em -0.05em black,
+        -0.05em 0.05em black,
+        0.05em -0.05em black,
+        0.05em 0.05em black;
+         
+    border: solid;
+    margin-bottom: 10px;
+    border-width: 4px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    background: var(--global-grey);
+}
+
+.craftstats-container-recipe-header {
+    padding-bottom: 20px;
+}
+
+.craftstats-container-recipe-content {
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+
+.craftstats-container-craft {
+    padding: 20px 20px 20px 20px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+    letter-spacing: .03em;
+    color: #fff;
+    text-shadow:
+        0.05em 0 black,
+        0 0.05em black,
+        -0.05em 0 black,
+        0 -0.05em black,
+        -0.05em -0.05em black,
+        -0.05em 0.05em black,
+        0.05em -0.05em black,
+        0.05em 0.05em black;
+         
+    border: solid;
+    border-width: 4px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    background: var(--global-grey);
+
+    margin: 20px auto;
 }
 
 .craftstats-macro {
-    display: grid;
-    grid-template-columns: repeat(18, 1fr);
-    grid-template-rows: repeat(1, 4vw);
-    grid-gap: auto;
-    margin: 10px 0px 0px 25px;
+    clear: both;
+    position: relative;
+    margin: 40px 0px 0px 25px;
 }
 
 .craftstats-macro img {
-    border-color: rgb(8, 8, 8);
     border-radius: calc(var(--main-scalar) * .5px);
-    box-shadow: 0px 3px 15px rgba(0,0,0,.4);
-    height: calc(var(--main-scalar) * 4px);
-    width: calc(var(--main-scalar) * 4px);
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, .4);
+    /* cursor: pointer; */
+    margin-bottom: 20px;
+    margin-right: 2.5%;
+
+    border-bottom: .5px solid rgb(68, 68, 68);
+    border-right: .5px solid rgb(68, 68, 68);
+    border-left: .5px solid rgb(68, 68, 68);
+    border-top: .5px solid rgb(151, 151, 151);
 }
 
 .craftstats-distribution-graph-container {
     height: 200px;
     background: transparent;
     position: relative;
-
+    padding: 2% 0% 0 5%;
+    
     border: solid;
-    border-width: 5px;
-    border-color: aqua;
+    border-width: 4px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    background: #333;
+}
+
+.craftstats-distribution-graph-whisker-left-text{
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 4px;
+    background: #555;
+    padding: 4px; 
+    margin-top: -20px;
+    z-index: 1;
+}
+
+
+.craftstats-distribution-graph-whisker-25-text{
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 4px;
+    background: #555;
+    padding: 4px; 
+    margin-top: -20px;
+    z-index: 2;
+}
+
+
+.craftstats-distribution-graph-whisker-75-text{
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 4px;
+    background: #555;
+    padding: 4px; 
+    margin-top: -20px;
+    z-index: 3;
+}
+
+
+.craftstats-distribution-graph-whisker-right-text{
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 4px;
+    background: #555;
+    padding: 4px; 
+    margin-top: -20px;
+    z-index: 4;
+}
+
+.craftstats-distribution-graph {
+    position: relative;
+    width: 95%;
 }
 
 .craftstats-distribution-graph-bar {
@@ -47,6 +182,8 @@
 
 .craftstats-distribution-graph-bar-recipe {
     width: 0px;
+    border-color: aqua;
+    z-index: 2;
 }
 
 .craftstats-distribution-graph-bar-0 {
@@ -65,7 +202,8 @@
     height: 50px;
     width: 100%;
     left: 0;
-    border-bottom: 5px solid black;
+    top: 50px;
+    border-top: 5px solid black;
 }
 
 .craftstats-distribution-graph-X-axis-text {
@@ -75,8 +213,14 @@
 .craftstats-distribution-graph-X-axis-recipe {
     left: 100px;
 }
+.craftstats-distribution-graph-X-axis-text-recipe {
+    margin-left: -40px;
+    color: aqua;
+    z-index: 1;
+}
 .craftstats-distribution-graph-X-axis-text-0 {
     left: 0;
+    margin-left: -30px;
 }
 .craftstats-distribution-graph-X-axis-text-50 {
     left: 50%;
@@ -84,31 +228,97 @@
 }
 .craftstats-distribution-graph-X-axis-text-100 {
     right: 0;
+    margin-right: -30px;
 }
 
+.craftstats-distribution-graph-text {
+    position: absolute;
+    color: var(--box-whisker-color);
+    margin-left: -30px;
+    z-index: 3;
+}
+
+
+.craftstats-distribution-graph-box-and-whiskers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
 
 .craftstats-distribution-graph-box {
     position: absolute;
-    display: block;
-    background-color: transparent;
+    background-color: var(--box-whisker-color);
     height: 50px;
-    top: 25px;
-    left: 25%;
-    border-bottom: 5px solid black;
+    margin-top: 25px;
+    border: 5px solid var(--box-whisker-color);
+    
+    z-index: 1;
 }
 
 .craftstats-distribution-graph-whisker-left-X {
+    position: absolute;
+    background-color: transparent;
+    height: 0px;
+    border-top: 5px solid var(--box-whisker-color);
+    margin-top: 50px;
+    
+    z-index: 1;
     
 }
 
 .craftstats-distribution-graph-whisker-right-X {
+    position: absolute;
+    background-color: transparent;
+    height: 0px;
+    border-top: 5px solid var(--box-whisker-color);
+    margin-top: 50px;
+    
+    z-index: 1;
     
 }
 
 .craftstats-distribution-graph-whisker-left-Y {
+    position: absolute;
+    background-color: transparent;
+    height: 50px;
+    border-left: 5px solid var(--box-whisker-color);
+    margin-top: 25px;
     
+    z-index: 1;
 }
 
 .craftstats-distribution-graph-whisker-right-Y {
+    position: absolute;
+    background-color: transparent;
+    height: 50px;
+    border-right: 5px solid var(--box-whisker-color);
+    margin-top: 25px;
     
+    z-index: 1;
+}
+
+
+
+@media only screen and (min-width: 1280px) and (max-width: 1600px) {
+    .craftstats-macro img {
+        margin-right: 2%;
+        height: 5.5%;
+        width: 5.5%;
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .craftstats-macro img {
+        margin-right: 1%;
+        height: 6.5%;
+        width: 6.5%;
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    .craftstats-macro img {
+        margin-right: 2.5%;
+        height: 5%;
+        width: 5%;
+    }
 }

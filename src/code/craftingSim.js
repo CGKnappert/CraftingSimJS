@@ -1,4 +1,4 @@
-const debug = 1;
+const debug = 0;
 
 class Action {
     constructor(name, durability, progressEfficiency, qualityEfficiency, CP, comboAction, comboBonus, specialist, successRate, buff, steps) {
@@ -27,7 +27,7 @@ class Action {
         console.log("specialist: " + String(this.specialist));
         console.log("buff: " + String(this.buff));
         console.log("steps: " + String(this.steps));
-        console.log();
+        console.log("");
     }
 
 }
@@ -259,6 +259,12 @@ class CrafterSim {
             this.quality = this.startingQuality;
         }
         console.log("Recipe set: " + currRecipe.name)
+
+        return {
+            recipeDurability: currRecipe.durability,
+            recipeDifficulty: currRecipe.difficulty,
+            recipeQuality: currRecipe.quality
+        }
     }
 
     loadActions() {
@@ -323,7 +329,7 @@ class CrafterSim {
             if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("four") >= 0) {
                 steps = 4;
             }
-            if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("five") >= 0) {
+            if (description.search("steps") && (description.substring(description.search("steps") - 20, description.search("steps")).search("five") >= 0 || description.substring(description.lastIndexOf("steps") - 20, description.lastIndexOf("steps")).search("five") >= 0)) {
                 steps = 5;
             }
             if (description.search("steps") && description.substring(description.search("steps") - 20, description.search("steps")).search("eight") >= 0) {
@@ -332,7 +338,7 @@ class CrafterSim {
 
             let newAction = new Action(action["Name"], durability, progressEfficiency, qualityEfficiency, CP, comboAction, comboBonus, specialist, successRate, buff, steps);
             actionArray[newAction.name] = newAction;
-            // newAction.print();
+            if (debug) newAction.print();
         }
 
         this.actionDict = actionArray;
@@ -340,6 +346,10 @@ class CrafterSim {
 
 
     executeStep(prevAction, action, condition, simulateConditions) {
+        // Exit early if invalid action
+        if (prevAction && action === "Reflect") return 0;
+        if (prevAction && action === "Muscel Memory") return 0;
+
         //TODO: simulate buffs, simulate expert, prep with < 10, expert buffs
         const actionType = this.actionDict[action];
 
@@ -369,12 +379,12 @@ class CrafterSim {
             if (condition === "excellent") conditonMultiplier = 4;
 
             //if combo action was not prior action and combo bonus is not changing success rate
-            if (!(actionType.comboAction === prevAction && actionType.comboBonus.search(/success rate/))) {
+            if (actionType.comboAction && (!(actionType.comboAction === prevAction && actionType.comboBonus.search(/success rate/)))) {
                 const rand = Math.floor(Math.random() * (100 - 1) + 1);
                 // simulate failure only if simulating conditions for monte carlo
                 if (actionType.successRate <= rand) {
                     craftSuccess = false;
-                    if (debug) console.log("failed!");
+                    if (debug) console.log("failed! rate: " + actionType.successRate + " rand: " + rand);
                 }
             }
         }
@@ -384,20 +394,11 @@ class CrafterSim {
             CPCost = actionType.comboBonus.match(/\d{2}/i)[0]
         }
 
-        //if combo action was not prior action and combo bonus is not 
-        if (actionType.comboAction !== prevAction || !actionType.comboBonus.search(/success rate/)) {
-            const rand = Math.floor(Math.random() * (100 - 1) + 1);
-            // simulate failure only if simulating conditions for monte carlo
-            if (actionType.successRate <= rand) {
-                craftSuccess = false;
-                if (debug) console.log("failed!");
-            }
-        }
-
+        // Quit before assessing new values if not enough CP for action
+        if (this.CP < ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2))) { return 1; }
         // decrease current CP amount by action cost
+        if (debug) console.log("Spent " + String((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2)) + " CP")
         this.CP -= ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2));
-        // Quit before assessing new values if not enough CP for aciton
-        if (this.CP < 0) { return; }
 
         // Calculate action progress or quality changes
         if (this.clvl >= this.rlvl && craftSuccess) {
@@ -435,20 +436,21 @@ class CrafterSim {
         }
 
         //Evaluate buffs
-        //TODO: Muscle Memory, observe combo action,
+        //TODO: observe combo action
         if (this.activeBuffs["Manipulation"] > 0) this.durability += 5;
         //Don't let durability overcap
         if (this.durability > this.recipeDurability) this.durability = this.recipeDurability;
 
         //Add any new buffs executed this step
-        if (this.actionDict[action].buff && (this.activeBuffs[action] !== undefined || action === "Muscle Memory")) this.activeBuffs[action] = actionType.steps;
+        if ((this.actionDict[action].buff && this.activeBuffs[action] !== undefined) || action === "Muscle Memory") this.activeBuffs[action] = actionType.steps;
         else if (this.actionDict[action].buff) this.activeBuffs[action] = actionType.steps;
 
         //Increment Inner Quiet
-        if ((action.search("Touch") || actionType.name === "Reflect") >= 0 && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
-        else if (action.search("Touch") >= 0) this.activeBuffs["Inner Quiet"] = 1;
-        if ((actionType.name === "Preparatory Touch" || actionType.name === "Reflect") && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
+        if ((action.search("Touch") >= 0 || actionType.name === "Delicate Synthesis") && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
+        else if (actionType.name.search("Touch") >= 0 || actionType.name === "Delicate Synthesis") this.activeBuffs["Inner Quiet"] = 1;
+        if (actionType.name === "Preparatory Touch" && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
         if (actionType.name === "Precise Touch" && this.activeBuffs["Inner Quiet"] >= 0) this.activeBuffs["Inner Quiet"] = this.activeBuffs["Inner Quiet"] + 1;
+        if (!prevAction && actionType.name === "Reflect") this.activeBuffs["Inner Quiet"] = 3;
         if (this.activeBuffs["Inner Quiet"] >= 0 && this.activeBuffs["Inner Quiet"] > 10) this.activeBuffs["Inner Quiet"] = 10; //Cap Inner Quiet at 10
 
         // this.printStatus(action, condition);
@@ -473,12 +475,14 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             };
         }
 
         while (this.durability > 0 && this.progress < this.difficulty && step < macro.length) {
-            this.executeStep(macro[step - 1], macro[step], condition, simulateConditions);
+            let stepEnum = this.executeStep(macro[step - 1], macro[step], condition, simulateConditions);
             if (simulateConditions && !expert) {
                 const rand = Math.floor(Math.random() * (100 - 1) + 1);
                 if (rand <= 10) condition = "poor"; //10% chance of poor
@@ -497,9 +501,9 @@ class CrafterSim {
             if (debug) console.log(condition);
 
             // Quit if run out of CP
-            if (this.CP < 0) {
-                console.log("Craft failed! Ran out of CP at step " + step);
-                console.log({
+            if (stepEnum === 1) {
+                if (debug) console.log("Craft failed! Ran out of CP at step " + step);
+                if (debug) console.log({
                     returnState: 1,
                     currBuffs: this.activeBuffs,
                     durability: this.durability,
@@ -507,7 +511,9 @@ class CrafterSim {
                     recipeDifficulty: this.difficulty,
                     quality: this.quality,
                     recipeQuality: this.recipeQuality,
-                    currCP: this.CP
+                    currCP: this.CP,
+                    recipe: this.recipeName,
+                    macro: macro
                 })
                 return {
                     returnState: 1,
@@ -517,15 +523,17 @@ class CrafterSim {
                     recipeDifficulty: this.difficulty,
                     quality: this.quality,
                     recipeQuality: this.recipeQuality,
-                    currCP: this.CP
+                    currCP: this.CP,
+                    recipe: this.recipeName,
+                    macro: macro
                 };
             }
             step += 1;
         }
         // TODO: Simplifiy
         if (this.progress >= this.difficulty) {
-            console.log("Craft Complete! with " + this.quality + " quality.");
-            console.log({
+            if (debug) console.log("Craft Complete! with " + this.quality + " quality.");
+            if (debug) console.log({
                 returnState: 4,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
@@ -533,7 +541,9 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             })
             return {
                 returnState: 4,
@@ -543,12 +553,14 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             };
         }
         else if (this.durability <= 0) {
-            console.log("Craft Failed!");
-            console.log({
+            if (debug) console.log("Craft Failed!");
+            if (debug) console.log({
                 returnState: 2,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
@@ -556,7 +568,9 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             })
             return {
                 returnState: 2,
@@ -566,12 +580,14 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             };
         }
         else {
-            console.log("Craft Incomplete!");
-            console.log({
+            if (debug) console.log("Craft Incomplete!");
+            if (debug) console.log({
                 returnState: 0,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
@@ -579,7 +595,9 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             })
 
             return {
@@ -590,7 +608,9 @@ class CrafterSim {
                 recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
-                currCP: this.CP
+                currCP: this.CP,
+                recipe: this.recipeName,
+                macro: macro
             };
         }
     }

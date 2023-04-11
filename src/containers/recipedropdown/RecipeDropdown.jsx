@@ -110,6 +110,7 @@ class RecipeDropdown extends Component {
                     autoComplete="off"
                     spellCheck="false"
                     // value={((this.props.recipe !== "" && typeof this.props.recipe === 'string') ? this.props.recipe : "Select a recipe")}
+                    placeholder= 'Select a recipe'
                 />
                 <img src={require(`../../assets/clear.png`)} className='recipe-dropdown-clear-icon' alt='clear' onClick={this.clearSearch} />
                 {this.state.isActive &&
@@ -132,7 +133,8 @@ class RecipeDropdown extends Component {
                                         {x.Name}
                                         <div className="recipe-dropdown-level">Level {x.ClassJobLevel}</div>
                                     </div>
-                                ))}
+                                )
+                                )}
                         </div>
                     </div>
                 }

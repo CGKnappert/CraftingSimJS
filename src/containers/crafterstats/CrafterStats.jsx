@@ -25,7 +25,7 @@ const CrafterStats = (props) => {
     return (
         <div className='crafting-sim-stats-and-recipe'>
             <div className='crafting-sim-stats-container'>
-                <div className='crafting-sim-crafter-stats-title'><h3>Crafter Stats:</h3></div>
+                <div className='crafting-sim-crafter-stats-title'><h3>Crafter Attributes</h3></div>
                 <div className='crafting-sim-crafter-stats'>
                     <div className='crafting-sim-crafter-stats-craftsmanship'>
                         <label htmlFor="craftsmanship">Craftsmanship: </label>
