@@ -1,3 +1,5 @@
+const debug = 1;
+
 class Action {
     constructor(name, durability, progressEfficiency, qualityEfficiency, CP, comboAction, comboBonus, specialist, successRate, buff, steps) {
         this.name = name;
@@ -125,6 +127,13 @@ class CrafterSim {
         this.qualityModifier = 1;
         this.qualityDivider = 1;
 
+        this.enumReturnState = {
+            0: "Failed. Insufficient progress.",
+            1: "Failed. Insufficient CP.",
+            2: "Failed. Insufficient durability.",
+            3: "Failed. No macro.",
+            4: "Complete."
+        }
     }
 
     get recipeName() { return this._recipeName }
@@ -195,6 +204,7 @@ class CrafterSim {
 
     get qualityDivider() { return this._qualityDivider }
     set qualityDivider(value) { this._qualityDivider = value }
+
 
     updateCrafterCraftsmanshipStat(craftsmanship) {
         this.craftsmanship = craftsmanship;
@@ -277,7 +287,7 @@ class CrafterSim {
             }
             //Set durability to 0 for non actions TODO: heart && Soul?
             if (['Tricks of the Trade', 'Observe', `Master's Mend`].includes(action["Name"])) {
-                durability = 20;
+                durability = 0;
             }
 
             //If progress && efficiency found in description string them set to 3 digits following it
@@ -364,7 +374,7 @@ class CrafterSim {
                 // simulate failure only if simulating conditions for monte carlo
                 if (actionType.successRate <= rand) {
                     craftSuccess = false;
-                    console.log("failed!");
+                    if (debug) console.log("failed!");
                 }
             }
         }
@@ -380,13 +390,21 @@ class CrafterSim {
             // simulate failure only if simulating conditions for monte carlo
             if (actionType.successRate <= rand) {
                 craftSuccess = false;
-                console.log("failed!");
+                if (debug) console.log("failed!");
             }
         }
 
+        // decrease current CP amount by action cost
+        this.CP -= ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2));
+        // Quit before assessing new values if not enough CP for aciton
+        if (this.CP < 0) { return; }
+
+        // Calculate action progress or quality changes
         if (this.clvl >= this.rlvl && craftSuccess) {
             this.progress += Math.floor((Math.floor(((this.craftsmanship * 10) / this.progressDivider) + 2) * Math.floor(actionProgressEfficiency) / 100) * progressMultiplier);
+            if (debug) console.log(this.progress);
             this.quality += Math.floor((Math.floor(((this.control * 10) / this.qualityDivider) + 35) * (actionQualityEfficiency * qualityEfficiencyMultiplier * conditonMultiplier) / 100) * qualityMultiplier);
+            if (debug) console.log(this.quality);
         }
         //TODO: Else for underleveled
 
@@ -398,9 +416,11 @@ class CrafterSim {
             this.durability -= Math.floor(Math.ceil(Math.floor(actionType.durability) / 10)) * 5;
         }
 
-        // decrease current CP amount by action cost
-        this.CP -= ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2));
-
+        // Add durability if Master's Mend
+        if (actionType.name === "Master's Mend") {
+            this.durability += 30;
+        }
+        
         //Remove any buffs consumed this step
         if (action.search("Byregot's") >= 0) delete this.activeBuffs["Inner Quiet"];
         if (action.search("Synthesis") >= 0) this.activeBuffs["Final Appraisal"] = 0;
@@ -446,10 +466,11 @@ class CrafterSim {
 
         if (!macro.length > 0) {
             return {
+                returnState: 3,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -473,26 +494,53 @@ class CrafterSim {
                 else if (rand <= 66) condition = "malleable"; //12% chance of malleable
                 else if (rand <= 78) condition = "primed"; //12% chance of primed
             }
+            if (debug) console.log(condition);
 
+            // Quit if run out of CP
+            if (this.CP < 0) {
+                console.log("Craft failed! Ran out of CP at step " + step);
+                console.log({
+                    returnState: 1,
+                    currBuffs: this.activeBuffs,
+                    durability: this.durability,
+                    progress: this.progress,
+                    recipeDifficulty: this.difficulty,
+                    quality: this.quality,
+                    recipeQuality: this.recipeQuality,
+                    currCP: this.CP
+                })
+                return {
+                    returnState: 1,
+                    currBuffs: this.activeBuffs,
+                    durability: this.durability,
+                    progress: this.progress,
+                    recipeDifficulty: this.difficulty,
+                    quality: this.quality,
+                    recipeQuality: this.recipeQuality,
+                    currCP: this.CP
+                };
+            }
             step += 1;
         }
         // TODO: Simplifiy
         if (this.progress >= this.difficulty) {
             console.log("Craft Complete! with " + this.quality + " quality.");
             console.log({
+                returnState: 4,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
             })
             return {
+                returnState: 4,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -501,19 +549,21 @@ class CrafterSim {
         else if (this.durability <= 0) {
             console.log("Craft Failed!");
             console.log({
+                returnState: 2,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
             })
             return {
+                returnState: 2,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -522,20 +572,22 @@ class CrafterSim {
         else {
             console.log("Craft Incomplete!");
             console.log({
+                returnState: 0,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
             })
 
             return {
+                returnState: 0,
                 currBuffs: this.activeBuffs,
                 durability: this.durability,
                 progress: this.progress,
-                difficulty: this.difficulty,
+                recipeDifficulty: this.difficulty,
                 quality: this.quality,
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP
@@ -556,6 +608,20 @@ class CrafterSim {
         console.log("CP: " + this.CP)
         console.log("Buffs: ")
         console.log(this.activeBuffs)
+        console.log()
+    }
+
+    printCrafter() {
+        console.log("craftsmanship: " + this.craftsmanship)
+        console.log("control: " + this.control)
+        console.log("CP: " + this.maxCP)
+        console.log("clvl: " + this.clvl)
+        console.log("recipeDurability: " + this.difficulty)
+        console.log("difficulty: " + this.difficulty)
+        console.log("recipeQuality: " + this.recipeQuality)
+        console.log("rlvl: " + this.rlvl)
+        console.log("master: " + this.master)
+        console.log("recipeName: " + this.recipeName)
         console.log()
     }
 }

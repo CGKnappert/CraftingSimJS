@@ -6,29 +6,21 @@ import { setCrafterCraftsmanship, setCrafterControl, setCrafterCP } from '../../
 
 const CrafterStats = (props) => {
     const recipe = useSelector((state) => state.recipe);
+    var Craftsmanship = useSelector((state) => state.Craftsmanship);
+    var Control = useSelector((state) => state.Control);
+    var CP = useSelector((state) => state.CP);
+    console.log(recipe, Craftsmanship)
     const dispatch = useDispatch();
 
     const setCraftmanship = (event) => {
         dispatch(setCrafterCraftsmanship(event.target.value));
-        props.simulatorUpdate();
     }
     const setControl = (event) => {
         dispatch(setCrafterControl(event.target.value));
-        props.simulatorUpdate();
     }
     const setCP = (event) => {
         dispatch(setCrafterCP(event.target.value));
-        props.simulatorUpdate();
     }
-
-    
-    // var tinctureInput = document.getElementById("recipeImg");
-    // if (tinctureInput !== null && recipe !== "" && typeof recipe === 'string') {
-    //     tinctureInput.src=require(`../../assets/RecipeIcons/${recipe}.png`);
-    // }
-    // else if (tinctureInput !== null) {
-    //     tinctureInput.style.display='none'
-    // }
 
     return (
         <div className='crafting-sim-stats-and-recipe'>
@@ -37,15 +29,15 @@ const CrafterStats = (props) => {
                 <div className='crafting-sim-crafter-stats'>
                     <div className='crafting-sim-crafter-stats-craftsmanship'>
                         <label htmlFor="craftsmanship">Craftsmanship: </label>
-                        <input type="number" className='crafting-sim-crafter-craftsmanship' id="craftsmanship" defaultValue="2000" min="1" max="5000" onChange={setCraftmanship} />
+                        <input type="number" className='crafting-sim-crafter-craftsmanship' id="craftsmanship" value={Craftsmanship} min="1" max="5000" onChange={setCraftmanship} />
                     </div>
                     <div className='crafting-sim-crafter-stats-control'>
                         <label htmlFor="control">Control: </label>
-                        <input type="number" className='crafting-sim-crafter-control' id="control" defaultValue="2000" min="1" max="5000" onChange={setControl} />
+                        <input type="number" className='crafting-sim-crafter-control' id="control" value={Control} min="1" max="5000" onChange={setControl} />
                     </div>
                     <div className='crafting-sim-crafter-stats-CP'>
                         <label htmlFor="CP">CP: </label>
-                        <input type="number" className='crafting-sim-crafter-CP' id="CP" defaultValue="500" min="1" max="2000" onChange={setCP} />
+                        <input type="number" className='crafting-sim-crafter-CP' id="CP" value={CP} min="1" max="2000" onChange={setCP} />
                     </div>
                 </div>
             </div>

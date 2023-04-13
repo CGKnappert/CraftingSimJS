@@ -1,5 +1,6 @@
 :root {
     --main-scalar: 12;
+    --stat-width: 70;
 }
 
 * {
@@ -29,8 +30,8 @@
 
 .crafting-sim-meal-container {
     height: 80px;
-    z-index: 1;
     left: 5%;
+    /* position: absolute; */
     /* background: rgb(216, 189, 140); */
     line-height: 0px;
 }
@@ -75,7 +76,7 @@
 
 .crafting-sim-meal-dropdown-content {
     position: absolute;
-    margin-left: 90px;
+    margin-left: 158px;
     padding-left: 10px;
     background: #fff;
     box-shadow: 10px 10px 10px 6px rgba(255, 255, 255, 0.06);
@@ -83,7 +84,7 @@
     font-weight: bold;
     color: #333;
     text-shadow: none;
-    width: 250px;
+    width: 225px;
     max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -95,6 +96,7 @@
     height: 40px;
     border-bottom: 1px solid black;
     display: flex;
+    z-index: 9;
 }
 
 .crafting-sim-meal-dropdown-name {
@@ -138,7 +140,7 @@
     align-items: center;
     float: right;
     display: grid;
-    grid-template-columns: 60px 60px;
+    grid-template-columns: 70px 70px;
     grid-row: auto auto;
 }
 
@@ -148,14 +150,12 @@
     margin-left: 55%;
     margin-top: 5px;
     width: 40%;
-    z-index: 1;
     /* background: rgb(119, 105, 78); */
 }
 
 
 .crafting-sim-tincture-container {
     height: 90px;
-    z-index: 1;
     left: 55%;
     /* background: rgb(216, 189, 140); */
     line-height: 0px;
@@ -180,7 +180,6 @@
     box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
     font-weight: bold;
     color: #333;
-    z-index: 1;
 }
 
 .crafting-sim-tincture-dropdown-hq-icon {
@@ -201,7 +200,7 @@
 
 .crafting-sim-tincture-dropdown-content {
     position: absolute;
-    margin-left: 91px;
+    margin-left: 155px;
     padding-left: 10px;
     background: #fff;
     box-shadow: 10px 10px 10px 6px rgba(255, 255, 255, 0.06);
@@ -209,12 +208,12 @@
     font-weight: bold;
     color: #333;
     text-shadow: none;
-    width: 250px;
+    width: 300px;
     max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
     line-height: 1rem;
-    z-index: 3;
+    z-index: 9;
 }
 
 .crafting-sim-tincture-dropdown-tincture {
@@ -265,19 +264,19 @@
     align-items: center;
     float: right;
     display: grid;
-    grid-template-columns: 60px 60px;
+    grid-template-columns: 70px 70px;
     grid-row: auto auto;
 }
 
 
 
-@media only screen and (min-width: 1450px) {
+@media only screen and (min-width: 1505px) {
     .crafting-sim-meal-and-tincture-container {
-        grid-template-columns: 500px 650px;
+        grid-template-columns: 45% 55%;
     }
 }
 
-@media only screen and (max-width: 1450px) {
+@media only screen and (max-width: 1505px) {
     .crafting-sim-meal-and-tincture-container {
         height: 190px;
     }
@@ -296,7 +295,7 @@
 }
 
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 1000px) {
     .crafting-sim-meal-text {
         margin-right: 20px;
     }

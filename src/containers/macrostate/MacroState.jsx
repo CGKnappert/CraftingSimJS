@@ -5,14 +5,15 @@ import { connect } from 'react-redux';
 
 
 class MacroState extends Component {
-    
+
     componentDidMount = () => {
         this._isMounted = true;
+        
         this.simulatorUpdate();
     }
 
     componentDidUpdate = () => {
-        this.simulatorUpdate()
+        this.simulatorUpdate();
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -31,22 +32,19 @@ class MacroState extends Component {
     // }
 
     simulatorUpdate = () => {
-        console.log(this.props)
+        console.log(this.props);
         try {
             const currProgress = document.querySelector('.crafting-sim-progress-bar-current');
-            currProgress.style.width = Math.min(((this.props.macroState.progress / this.props.difficulty) * 100), 100) + '%';
-            currProgress.style.opacity = 1;
+            currProgress.style.width = Math.min(((this.props.macroState.progress / this.props.macroState.recipeDifficulty) * 100), 100) + '%';
 
             const currQuality = document.querySelector('.crafting-sim-quality-bar-current');
-            currQuality.style.width = Math.min(((this.props.macroState.quality / this.props.recipeQuality) * 100), 100) + '%';
-            currQuality.style.opacity = 1;
+            currQuality.style.width = Math.min(((this.props.macroState.quality / this.props.macroState.recipeQuality) * 100), 100) + '%';
 
             const currCP = document.querySelector('.crafting-sim-CP-bar-current');
             currCP.style.width = Math.min(((this.props.macroState.currCP / this.props.CP + this.props.mealCP + this.props.tinctureCP) * 100), 100) + '%';
-            currCP.style.opacity = 1;
 
             const progressHeader = document.querySelector('.crafting-sim-progress-header-right');
-            progressHeader.innerHTML = ('<h3>' + (this.props.macroState.progress) + ' / ' + ((this.props.macroState.difficulty !== undefined) ? this.props.macroState.difficulty : 0) + '</h3>');
+            progressHeader.innerHTML = ('<h3>' + (this.props.macroState.progress) + ' / ' + ((this.props.macroState.recipeDifficulty !== undefined) ? this.props.macroState.recipeDifficulty : 0) + '</h3>');
 
             const qualityHeader = document.querySelector('.crafting-sim-quality-header-right');
             qualityHeader.innerHTML = ('<h3>' + (this.props.macroState.quality) + ' / ' + ((this.props.macroState.recipeQuality !== undefined) ? this.props.macroState.recipeQuality : 0) + '</h3>');
@@ -55,7 +53,7 @@ class MacroState extends Component {
             CPHeader.innerHTML = ('<h3>' + (this.props.macroState.currCP) + ' / ' + (this.props.CP + this.props.mealCP + this.props.tinctureCP) + '</h3>');
 
         } catch (error) {
-            console.log("Not rendered yet: " + error)
+            console.log("Not rendered yet: " + error);
         }
     }
 
@@ -71,9 +69,8 @@ class MacroState extends Component {
                         <div className="crafting-sim-progress-header-right">
                         </div>
                     </div>
-                    <div className="crafting-sim-progress-bar-total">
-                        <div className="crafting-sim-progress-bar-current">
-                        </div>
+                    <div className="crafting-sim-progress-bar">
+                        <span className="crafting-sim-progress-bar-current"></span>
                     </div>
                 </div>
 
@@ -85,23 +82,21 @@ class MacroState extends Component {
                         <div className="crafting-sim-quality-header-right">
                         </div>
                     </div>
-                    <div className="crafting-sim-quality-bar-total">
-                        <div className="crafting-sim-quality-bar-current">
-                        </div>
+                    <div className="crafting-sim-quality-bar">
+                        <span className="crafting-sim-quality-bar-current"></span>
                     </div>
                 </div>
 
                 <div className="crafting-sim-CP-status">
                     <div className="crafting-sim-CP-header">
-                        <div className="crafting-sim-progress-header-left">
-                            <h3>Craft CP </h3>
+                        <div className="crafting-sim-CP-header-left">
+                            <h3>Crafter CP </h3>
                         </div>
                         <div className="crafting-sim-CP-header-right">
                         </div>
                     </div>
-                    <div className="crafting-sim-CP-bar-total">
-                        <div className="crafting-sim-CP-bar-current">
-                        </div>
+                    <div className="crafting-sim-CP-bar">
+                        <span className="crafting-sim-CP-bar-current"></span>
                     </div>
                 </div>
 
@@ -112,6 +107,7 @@ class MacroState extends Component {
 
 const mapStateToFunction = state => {
     return {
+        recipe: state.recipe,
         CP: state.CP,
         mealCP: state.meal.CP,
         tinctureCP: state.tincture.CP,
