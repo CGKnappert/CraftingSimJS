@@ -193,7 +193,7 @@ class MealsNTincture extends Component {
         let tinctureInput = document.getElementById("tinctureInput");
         tinctureInput.value = newValue;
 
-        
+
         for (const tincture of this.state.tinctureArray) {
             if (tincture.Name === newValue) {
                 if (debug) console.log(tincture)
