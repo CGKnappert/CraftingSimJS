@@ -27,6 +27,7 @@ export function setMeal(meal) {
     console.log("Index: " + meal)
     return {
         type: SET_MEAL,
+        Name: meal.Name,
         Craftsmanship: meal.Craftsmanship,
         Control: meal.Control,
         CP: meal.CP,
@@ -38,9 +39,11 @@ export function setTincture(tincture) {
     console.log("Index: " + tincture)
     return {
         type: SET_TINCTURE,
+        Name: tincture.Name,
         Craftsmanship: tincture.Craftsmanship,
         Control: tincture.Control,
-        CP: tincture.CP
+        CP: tincture.CP,
+        LevelItem: tincture.LevelItem
     }
 }
 

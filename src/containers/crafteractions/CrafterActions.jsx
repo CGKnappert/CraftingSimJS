@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import './crafteractions.css';
 import { addMacroAction } from '../../context/index'
+const debug = 0;
 
 
 function CrafterActions(props) {
@@ -11,7 +12,7 @@ function CrafterActions(props) {
   const dispatch = useDispatch();
 
   const addAction = (event) => {
-    console.log(event)
+    if (debug) console.log(event)
     dispatch(addMacroAction(event));
   }
 
@@ -38,6 +39,7 @@ function CrafterActions(props) {
   return (
     <div className='crafting-sim-container'>
       <div className="crafting-sim-actions">
+        <div className='crafting-sim-actions-title'><h3>Crafter Actions</h3></div>
 
         <div className="crafting-sim-synthesis">
           <h3>Synthesis Actions</h3>

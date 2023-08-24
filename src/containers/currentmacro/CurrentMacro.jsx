@@ -75,7 +75,7 @@ class CurrentMacro extends Component {
 
                 {this.state.showExport &&
                     <div className="export-overlay-container">
-                        <div className="export-overlay" onClick={this.closeOverlay}  >
+                        <div className="export-overlay" onClick={this.closeOverlay} >
                         </div>
                         <div className='export-overlay-window'>
                             <textarea className='export-overlay-macro' id="exportedMacro" cols="15" type="string" value={this.macroString} readOnly={true} />

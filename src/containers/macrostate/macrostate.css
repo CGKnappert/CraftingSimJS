@@ -1,5 +1,5 @@
 :root {
-    --main-scalar: 12;
+    
 }
 
 * {
@@ -10,19 +10,31 @@
 
 
 /* Whole container */
+/*# TODO ^ should be status-and-buffs */
 .crafting-sim-status-container {
     position: relative;
     height: 100%;
-    width: 80%;
-    min-width: 650px;
+    width: var(--global-width);
+    min-width: var(--global-min-width);
+}
+
+
+
+.crafting-sim-status-container {
+    position: relative;
+    height: 100%;
+    width: var(--global-width);
+    min-width: var(--global-min-width);
     margin: 20px auto;
+    padding: 10px 10px 30px 10px;
 
     border: solid;
     border-width: 4px;
-    border-color: rgb(0, 0, 0);
+    border-color: black;
     border-radius: 20px;
-    background: #333;
+    background: var(--global-grey);
 
+    font-size: var(--global-body-font-size);
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased !important;
     -moz-font-smoothing: antialiased !important;
@@ -40,18 +52,18 @@
         0.05em 0.05em black;
 }
 
-
-
-.crafting-sim-status-container {
-    height: 330px;
-    margin-top: 10px;
-    /* background: yellow; */
+.crafting-sim-status-title {
+    height: var(--global-header-height);
+    font-size: var(--global-header-font-size);
+    margin-left: 15px;
 }
 
 /*#region - Progress Bar */
 .crafting-sim-progress-status {
     padding-top: calc(var(--main-scalar) * 2px);
     margin: 0px calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
+    
+    font-size: var(--global-body-font-size);
 }
 
 .crafting-sim-progress-header {
@@ -77,6 +89,15 @@
     border: solid;
     border-width: 2px;
     border-color: rgb(255, 255, 255);
+
+    overflow: hidden;
+    position: relative;
+    
+}
+
+.crafting-sim-progress-bar span {
+    display: block;
+    height: 100%;
 }
 
 .crafting-sim-progress-bar-current {
@@ -88,7 +109,15 @@
         inset 0 -2px 6px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
+    
+    animation: progressBar 1s linear forwards;
+    animation-fill-mode: both; 
 }
+
+/* @keyframes progressBar {
+    0% {  }
+    100% { width: 100% }
+  } */
 
 /*#endregion*/
 
@@ -96,6 +125,8 @@
 .crafting-sim-quality-status {
     padding-top: calc(var(--main-scalar) * 1px);
     margin: calc(var(--main-scalar) * 2px) calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
+    
+    font-size: var(--global-body-font-size);
 }
 
 .crafting-sim-quality-header {
@@ -159,7 +190,7 @@
     box-sizing: content-box;
     height: calc(var(--main-scalar) * 2px);
     width: 100%;
-    background-color: rgb(124, 108, 51);
+    background-color: rgb(97, 84, 39);
     border-radius: calc(var(--main-scalar) * 1px);
 
     border: solid;
@@ -176,6 +207,130 @@
         inset 0 -2px 6px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
+}
+/*#endregion*/
+
+
+/*#region - Durability Bar */
+.crafting-sim-durability-status {
+    padding-top: calc(var(--main-scalar) * 1px);
+    margin: calc(var(--main-scalar) * 2px) calc(var(--main-scalar) * 2px) 0px calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-durability-header {
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 30px);
+    grid-gap: auto;
+}
+
+.crafting-sim-durability-header-right {
+    text-align: right;
+    padding-right: calc(var(--main-scalar) * 2px);
+}
+
+.crafting-sim-durability-bar {
+    box-sizing: content-box;
+    height: calc(var(--main-scalar) * 2px);
+    width: 100%;
+    background-color: rgb(78, 19, 105);
+    border-radius: calc(var(--main-scalar) * 1px);
+
+    border: solid;
+    border-width: 2px;
+    border-color: rgb(255, 255, 255);
+}
+
+.crafting-sim-durability-bar-current {
+    display: block;
+    height: 100%;
+    border-radius: calc(var(--main-scalar) * 1px);
+    background-color: rgb(171, 47, 228);
+    box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+/*#endregion*/
+
+
+  /* Whole buffs container */
+  .crafting-sim-buffs-active {
+    position: relative;
+    height: 100%;
+    width: 80%;
+    min-width: 650px;
+    margin: 20px auto;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+    letter-spacing: .03em;
+    color: #fff;
+    text-shadow:
+        0.05em 0 black,
+        0 0.05em black,
+        -0.05em 0 black,
+        0 -0.05em black,
+        -0.05em -0.05em black,
+        -0.05em 0.05em black,
+        0.05em -0.05em black,
+        0.05em 0.05em black;
+
+    border: solid;
+    border-width: 4px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    background: #333;
+}
+
+/*#region - Current Buffs Bar */  
+.crafting-sim-buffs-active {
+    height: calc(var(--main-scalar) * 12px);
+    /* background: rgb(216, 65, 178); */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: calc(var(--main-scalar) * 1px);
+}
+
+.crafting-sim-buffs-active-header {
+    height: var(--global-header-height);
+    font-size: var(--global-header-font-size);
+
+    margin: 0px 0px 0px 25px;
+    font-family: var(--font-family);
+}
+
+.crafting-sim-buffs-active-image {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    grid-template-rows: repeat(1, 4vw);
+    grid-gap: auto;
+    margin: 10px 0px 0px 25px;
+}
+
+.crafting-sim-buffs-active img {
+    border-color: rgb(8, 8, 8);
+    border-radius: calc(var(--main-scalar) * .5px);
+    cursor: pointer;
+    height: calc(var(--main-scalar) * 5px);
+    width: calc(var(--main-scalar) * 4px);
+}
+.dragging {
+    opacity: 1;
+  }
+
+.crafting-sim-buffs-active-count {
+    margin-top: -22px;
+    margin-left: 16px;
+    font-weight: 700;
+    text-shadow: none;
+    font-size: 8;
+    font-family: "Helvetica";
+    color: rgb(107, 255, 198);
+    /* text-shadow: 1px 4px 3px rgb(48, 122, 94); */
+    -webkit-text-stroke: 1px rgb(48, 122, 94);
 }
 
 /*#endregion*/
