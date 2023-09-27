@@ -1,34 +1,23 @@
 {
-  "name": "craftingsimjs",
+  "name": "stickycrafting",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "^7.17.8",
-    "@babel/preset-env": "^7.16.11",
-    "@react-native-async-storage/async-storage": "^1.17.1",
-    "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.3",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "chart.js": "^3.7.1",
-    "jquery": "^3.6.0",
-    "node-fetch": "^3.2.3",
-    "react": "^17.0.2",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^17.0.2",
-    "react-icons": "^4.3.1",
-    "react-lazyload": "^3.2.0",
-    "react-native": "^0.59.10",
-    "react-native-web": "^0.17.7",
-    "react-plotly.js": "^2.5.1",
-    "react-redux": "^7.2.8",
-    "react-router-dom": "^6.2.2",
-    "react-scripts": "^2.1.3",
-    "redux": "^4.1.2",
-    "redux-devtools-extension": "^2.13.9",
+    "babel": "^6.23.0",
+    "create-react-app": "^5.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "^0.72.3",
+    "react-native-web": "^0.19.6",
+    "react-redux": "^8.1.1",
+    "react-router-dom": "^6.14.2",
+    "react-scripts": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "save-dev": "^0.0.1-security",
+    "redux-thunk": "^2.4.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -54,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

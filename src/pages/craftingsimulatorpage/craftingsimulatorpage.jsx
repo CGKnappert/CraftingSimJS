@@ -19,7 +19,9 @@ class CraftingSimulatorPage extends Component {
     }
 
     setToggleClass = (id) => {
-        this.state.classImages[id]["state"] = !this.state.classImages[id]["state"];
+        let classImagesTemp = this.state.classImages
+        classImagesTemp[id]["state"] = !this.state.classImages[id]["state"];
+        this.setState({ "classImages": classImagesTemp });
         let newSelected = [];
         this.state.classImages.forEach(element => {
             if (element["state"]) {

@@ -16,18 +16,18 @@ class Action {
     }
 
     print() {
-        console.log("Name: " + String(this.name));
-        console.log("durability: " + String(this.durability));
-        console.log("progressEfficiency: " + String(this.progressEfficiency));
-        console.log("qualityEfficiency: " + String(this.qualityEfficiency));
-        console.log("CP: " + String(this.CP));
-        console.log("successRate: " + String(this.successRate));
-        console.log("comboAction: " + this.comboAction);
-        console.log("comboBonus: " + this.comboBonus);
-        console.log("specialist: " + String(this.specialist));
-        console.log("buff: " + String(this.buff));
-        console.log("steps: " + String(this.steps));
-        console.log("");
+        if (debug) console.log("Name: " + String(this.name));
+        if (debug) console.log("durability: " + String(this.durability));
+        if (debug) console.log("progressEfficiency: " + String(this.progressEfficiency));
+        if (debug) console.log("qualityEfficiency: " + String(this.qualityEfficiency));
+        if (debug) console.log("CP: " + String(this.CP));
+        if (debug) console.log("successRate: " + String(this.successRate));
+        if (debug) console.log("comboAction: " + this.comboAction);
+        if (debug) console.log("comboBonus: " + this.comboBonus);
+        if (debug) console.log("specialist: " + String(this.specialist));
+        if (debug) console.log("buff: " + String(this.buff));
+        if (debug) console.log("steps: " + String(this.steps));
+        if (debug) console.log("");
     }
 
 }
@@ -227,9 +227,9 @@ class CrafterSim {
     }
 
     updateCrafterStats(craftsmanship, control, CP, clvl, specialist) {
-        console.log(craftsmanship);
-        console.log(control);
-        console.log(CP);
+        if (debug) console.log(craftsmanship);
+        if (debug) console.log(control);
+        if (debug) console.log(CP);
         this.craftsmanship = craftsmanship;
         this.control = control;
         this.maxCP = CP;
@@ -258,7 +258,7 @@ class CrafterSim {
             this.progress = 0;
             this.quality = this.startingQuality;
         }
-        console.log("Recipe set: " + currRecipe.name)
+        if (debug) console.log("Recipe set: " + currRecipe.name)
 
         return {
             recipeDurability: currRecipe.durability,
@@ -352,25 +352,26 @@ class CrafterSim {
 
         //TODO: simulate buffs, simulate expert, prep with < 10, expert buffs
         const actionType = this.actionDict[action];
+        if (!actionType) console.log("Could not find action: " + action);
 
-        let progressMultiplier = 1.0;
+        var progressMultiplier = 1.0;
         //If Muscle Memory buff is up, curent action is synthesis && not muscle memory
         if (actionType.name !== "Muscle Memory" && "Muscle Memory" in this.activeBuffs && actionType.progressEfficiency > 0) progressMultiplier += 1;
 
-        let qualityEfficiencyMultiplier = 1.0;
+        var qualityEfficiencyMultiplier = 1.0;
         if (this.activeBuffs["Inner Quiet"] > 0 && actionType.qualityEfficiency > 0) qualityEfficiencyMultiplier = qualityEfficiencyMultiplier + this.activeBuffs["Inner Quiet"] * .1;
         //qualityEfficiencyMultiplier += 0 if not actionType.name == "Byregot's Blessing" or not this.activeBuffs.get("Inner Quiet") else this.activeBuffs["Inner Quiet"] * 20
 
-        let qualityMultiplier = 1.0;
+        var qualityMultiplier = 1.0;
         if (this.activeBuffs["Innovation"] > 0 && actionType.qualityEfficiency > 0) qualityMultiplier = qualityMultiplier + .5;
         if (actionType.name === "Byregot's Blessing" && this.activeBuffs["Inner Quiet"] > 0) actionType.qualityEfficiency = 100 + (20 * this.activeBuffs["Inner Quiet"]);
 
         // Set consts to temp vars so they can be adjusted based on conditions and combos
-        let conditonMultiplier = 1.0
-        let actionProgressEfficiency = actionType.progressEfficiency;
-        let actionQualityEfficiency = actionType.qualityEfficiency;
-        let CPCost = actionType.CP;
-        let craftSuccess = true;
+        var conditonMultiplier = 1.0
+        var actionProgressEfficiency = actionType.progressEfficiency;
+        var actionQualityEfficiency = actionType.qualityEfficiency;
+        var CPCost = actionType.CP;
+        var craftSuccess = true;
 
         if (simulateConditions) {
             // onyl need to calc conditions if simulating conditions, otherwise 1
@@ -543,7 +544,8 @@ class CrafterSim {
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP,
                 recipe: this.recipeName,
-                macro: macro
+                macro: macro,
+                finishingStep: step
             })
             return {
                 returnState: 4,
@@ -555,7 +557,8 @@ class CrafterSim {
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP,
                 recipe: this.recipeName,
-                macro: macro
+                macro: macro,
+                finishingStep: step
             };
         }
         else if (this.durability <= 0) {
@@ -613,6 +616,18 @@ class CrafterSim {
                 macro: macro
             };
         }
+    }
+
+    calcualteProgess(macro) {
+        return macro.replaceAll(/\/echo[^\n]+/g, '').replaceAll(/"*[\t\r\v\f ]*<[^>]+>[\t\r\v\f ]*/g, '').replaceAll(/\/ac\s+/g, '').replaceAll(/"\s*/g, '').split(/[\r\n]+/).filter((val) => val !== "");
+    }
+
+    calculateQuality(macro) {
+        for (let step in macro) {
+
+        }
+        
+        // return Math.floor((Math.floor(((this.control * 10) / this.qualityDivider) + 35) * (actionQualityEfficiency * qualityEfficiencyMultiplier * conditonMultiplier) / 100) * qualityMultiplier);
     }
 
     reformatMacro(macro) {

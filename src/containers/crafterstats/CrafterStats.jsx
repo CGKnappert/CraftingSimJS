@@ -46,7 +46,7 @@ const CrafterStats = (props) => {
                     <h3> {'Recipe: ' + ((recipe !== "" && typeof recipe === 'string') ? recipe : "None")} </h3>
                 </div>
                 <div className='crafting-sim-recipe-icon'>
-                    <img className='crafting-sim-recipe-icon-img' id="recipeImg" style={{display: (recipe !== "" && typeof recipe === 'string') ? "" : "none"}} src={(recipe !== "" && typeof recipe === 'string') ? require(`../../assets/RecipeIcons/${recipe}.png`) : ""} />
+                    <img className='crafting-sim-recipe-icon-img' id="recipeImg" alt="Recipt Icon" style={{display: (recipe !== "" && typeof recipe === 'string') ? "" : "none"}} src={(recipe !== "" && typeof recipe === 'string') ? require(`../../assets/RecipeIcons/${recipe}.png`) : ""} />
                 </div>
             </div>
         </div>

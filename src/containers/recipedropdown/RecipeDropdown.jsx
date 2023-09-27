@@ -115,7 +115,6 @@ class RecipeDropdown extends Component {
                 <img src={require(`../../assets/clear.png`)} className='recipe-dropdown-clear-icon' alt='clear' onClick={this.clearSearch} />
                 {this.state.isActive &&
                     <div className="recipe-dropdown-content">
-                        <div>
                             {this.state.recipeNames
                                 //Apply unique filter
                                 .filter((value, index, arr) => arr.indexOf(value) === index)
@@ -126,16 +125,15 @@ class RecipeDropdown extends Component {
                                     <div
                                         onMouseDown={this.chooseOption.bind(this, x.Name)}
                                         key={x.Name}
-                                        className="recipe-dropdown-name" >
+                                        className="recipe-dropdown-item" >
                                         {/* <LazyLoad height={40}> */}
                                         <img src={require(`../../assets/RecipeIcons/${x.Name}.png`)} alt='recipe-icon' className="recipe-dropdown-icon" />
                                         {/* </LazyLoad> */}
-                                        {x.Name}
+                                        <div className="recipe-dropdown-name">{x.Name}</div>
                                         <div className="recipe-dropdown-level">Level {x.ClassJobLevel}</div>
                                     </div>
                                 )
                                 )}
-                        </div>
                     </div>
                 }
             </div>

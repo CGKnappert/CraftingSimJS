@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import bunnyLogo from '../../assets/Just Bun.png'
 import './navbar.css';
-import { resetCrafterStats, setRecipe } from '../../context/index'
-import { connect } from 'react-redux';
+// import { resetCrafterStats, setRecipe } from '../../context/index'
+// import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, NavLink, Routes, Link } from 'react-router-dom'
 import { CraftingSimulatorPage, CraftStats, CraftSolver } from '../../pages';
 
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
   
   render() {
     return (
@@ -19,7 +19,7 @@ class Navbar extends Component {
         <div className="stickysim__navbar">
           <div className="stickysim__navbar-links">
             <div className="stickysim__navbar-links_logo">
-                <NavLink to="/" alt="bunnyLogo"><img className='bunnyLogo' src={bunnyLogo}/></NavLink>
+                <NavLink to="/" alt="bunnyLogo"><img className='bunnyLogo' alt="bunnyLogo" src={bunnyLogo}/></NavLink>
             </div>
                 <nav>
             <div className="stickysim__navbar-links_container">
