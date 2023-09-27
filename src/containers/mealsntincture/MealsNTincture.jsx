@@ -259,8 +259,8 @@ class MealsNTincture extends Component {
     render() {
         return (
             <div className="crafting-sim-meal-and-tincture-container">
-            <div className='crafting-sim-meal-and-tincture-title'><h3>Consumables</h3></div>
-            <div className='crafting-sim-meal-and-tincture-empty-cell'></div>
+                <div className='crafting-sim-meal-and-tincture-title'><h3>Consumables</h3></div>
+                <div className='crafting-sim-meal-and-tincture-empty-cell'></div>
                 <div className="crafting-sim-meal-container">
                     <div className="crafting-sim-meal-dropdown-search-title"><p>Meals</p></div>
                     <input className="crafting-sim-meal-dropdown-button"

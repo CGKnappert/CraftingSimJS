@@ -1,7 +1,76 @@
-.craft-solver {
+@import '../../../src/global.css';
 
+.craft-solver {
+    height: 100%;
+    width: var(--global-width);
+    min-width: var(--global-min-width);
+    margin: 0 auto;
+    position: relative;
+
+    font-weight: 500;
+    font-size: large;
+    
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+    letter-spacing: .03em;
+    color: #fff;
+    text-shadow:
+        0.05em 0 black,
+        0 0.05em black,
+        -0.05em 0 black,
+        0 -0.05em black,
+        -0.05em -0.05em black,
+        -0.05em 0.05em black,
+        0.05em -0.05em black,
+        0.05em 0.05em black;
+}
+
+.craftstats-container-recipe {
+    position: relative;
+    height: 100%; 
+
+    margin: 20px auto;
+    padding: 20px 20px 20px 20px;
+         
+    border: solid;
+    margin-bottom: 10px;
+    border-width: 4px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    background: var(--global-grey);
+
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: 50% 50%;
+}
+
+.craft-solver-solve {
+    position: relative;
+    height: 100%; 
+
+    margin: 20px auto;
+    padding: 20px 20px 20px 20px;
+         
+    border: solid;
+    margin-bottom: 10px;
+    border-width: 4px;
+    border-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    background: var(--global-grey);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.craft-solver-solve-button {
+    margin: 20px auto;
 }
 
 .craft-solver-macro-string {
-    background: aliceblue;
+    width: auto;
+    height: auto;
+    min-height: 100px;
+    justify-content: center;
 }

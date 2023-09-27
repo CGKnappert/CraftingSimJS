@@ -3,7 +3,7 @@ import './craftstats.css';
 import { simulateMacro } from '../../context/index'
 import { connect } from 'react-redux';
 import CrafterSim from '../../code/craftingSim.js'
-const debug = 1;
+const debug = 0;
 
 class CraftStats extends React.Component {
 
@@ -157,6 +157,7 @@ class CraftStats extends React.Component {
     if (debug) console.log("CraftStats: Draw");
 
     try {
+      // Populate Recipe Stats
       if (debug) console.log("Set name: " + this.state.craftSim.recipeName);
       const nameHeader = document.querySelector('.craftstats-container-recipe-name');
       nameHeader.innerHTML = ('<h3>Recipe name: ' + (this.state.craftSim.recipeName) + '</h3>');
@@ -172,7 +173,21 @@ class CraftStats extends React.Component {
       if (debug) console.log("Set quality: " + this.state.craftSim.recipeQuality);
       const qualityHeader = document.querySelector('.craftstats-container-recipe-quality');
       qualityHeader.innerHTML = ('<h3>Recipe quality: ' + (this.state.craftSim.recipeQuality) + '</h3>');
+      
+      // Populate whisker box math
+      const failureLabel = document.querySelector('.craftstats-container-recipe-failure-rate');
+      failureLabel.innerHTML = ('<h3>Failure Rate: ' + 0 + '</h3>');
 
+      let count = 0;
+      this.state.macroResults.forEach(result => { 
+        (result >= this.state.craftSim.recipeQuality) ? count++ : count += 0;  
+      })
+      let HQRate = (count / this.state.macroResults.length) * 100
+      const HQLabel = document.querySelector('.craftstats-container-recipe-HQ-rate');
+      HQLabel.innerHTML = ('<h3>HQ Rate: ' + HQRate + '%</h3>');
+
+
+      // Perform whisker box math
       if (debug) console.log("macro Results: " + this.state.macroResults[0]);
       let min = this.state.macroResults[0];
       let max = this.state.macroResults[this.state.macroResults.length - 1];
@@ -181,6 +196,7 @@ class CraftStats extends React.Component {
       let falseMax = (Math.floor(max.toString()[0]) + 1) * (10 ** (max.toString().length - 1));
       if (debug) console.log("macro stats: ", min, max, box25, box75, falseMax);
 
+      // Populate whisker box data
       const Quality100Header = document.querySelector('.craftstats-distribution-graph-X-axis-text-100');
       Quality100Header.innerHTML = (falseMax + ' Quality');
 
@@ -239,13 +255,22 @@ class CraftStats extends React.Component {
       <div className="craftstats-container">
         <div className='craftstats-container-recipe'>
           <div className='craftstats-container-recipe-header'>
-            <h1>Recipe Stats</h1>
+            <h1>Recipe</h1>
+          </div>
+          <div className='craftstats-container-stats-header'>
+            <h1>Statistics</h1>
           </div>
           <div className='craftstats-container-recipe-content'>
             <div className='craftstats-container-recipe-name'/>
             <div className='craftstats-container-recipe-durability'/>
             <div className='craftstats-container-recipe-progress'/>
             <div className='craftstats-container-recipe-quality'/>
+          </div>
+          <div className="craftstats-container-recipe-math">
+            <div className="craftstats-container-recipe-failure-rate"/>
+            <div className="craftstats-container-recipe-HQ-rate"/>
+            {/* <div className='craftstats-container-recipe-progress'/>
+            <div className='craftstats-container-recipe-quality'/> */}
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './currentmacro.css';
 import { removeMacroAction, setMacro } from '../../context/index'
 import { connect } from 'react-redux';
+const debug = 1;
 
 class CurrentMacro extends Component {
 
@@ -19,37 +20,49 @@ class CurrentMacro extends Component {
     }
 
     closeOverlay = () => {
-        this.state.showImport.setState(false);
-        this.state.showExport.setState(false);
+        this.setState({ showImport: false });
+        this.setState({ showExport: false });
         console.log("close");
         this.forceUpdate();
     }
 
 
-    openExportOverlay = () => {
+    arrayToMacro = (array) => {
         let jsonString = require('../../JSON/CraftAction.json');
 
         let macroStringTemp = "";
-        for (let step of this.props.macro) {
+        for (let step of array) {
             for (let action of jsonString) {
                 if (action["Name"] === step) {
                     if ((action["ActionCategory"] !== undefined && action["ActionCategory"] !== null)) {
                         macroStringTemp += `/ac ${step} <wait.2>\n`;
                     }
                     else {
-                        macroStringTemp += `/ac + ${step} <wait.3>\n`;
+                        macroStringTemp += `/ac "${step}" <wait.3>\n`;
                     }
                 }
             }
         }
-        this.setState({ showExport: true }, {macroString: macroStringTemp})
+        return macroStringTemp
+    }
+
+
+    openExportOverlay = () => {
+        this.setState({ showExport: true });
+        console.log(this.props.macro)
+        console.log(this.arrayToMacro(this.props.macro))
+        this.setState({macroString: this.arrayToMacro(this.props.macro)})
     }
 
 
     importMacro = () => {
         let importMacro = document.getElementById("importedMacro");
         this.setState({ showImport: false });
-        this.props.setMacro(importMacro.value.replaceAll(/\/echo[^\n]+/g, '').replaceAll(/"*[\t\r\v\f ]*<[^>]+>[\t\r\v\f ]*/g, '').replaceAll(/\/ac\s+/g, '').replaceAll(/"\s*/g, '').split(/[\r\n]+/).filter((val) => val !== ""));
+
+        // TODO: Cleanse macro before setting
+        let tempMacro = importMacro.value.replaceAll(/\/echo[^\n]+/g, '').replaceAll(/"*[\t\r\v\f ]*<[^>]+>[\t\r\v\f ]*/g, '').replaceAll(/\/ac\s+/g, '').replaceAll(/"\s*/g, '').split(/[\r\n]+/).filter((val) => val !== "");
+        if (debug) console.log("Imported Macro: " + tempMacro)
+        this.props.setMacro(tempMacro);
         this.forceUpdate();
     }
 
@@ -78,7 +91,7 @@ class CurrentMacro extends Component {
                         <div className="export-overlay" onClick={this.closeOverlay} >
                         </div>
                         <div className='export-overlay-window'>
-                            <textarea className='export-overlay-macro' id="exportedMacro" cols="15" type="string" value={this.macroString} readOnly={true} />
+                            <textarea className='export-overlay-macro' id="exportedMacro" cols="15" type="string" value={this.state.macroString} readOnly={true} />
                             <button className='closeExportMacroButton' onClick={this.closeOverlay}>Close Window</button>
                         </div>
                     </div>
