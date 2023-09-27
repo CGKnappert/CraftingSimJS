@@ -90,7 +90,7 @@
 
 .crafting-sim-meal-dropdown-content {
     position: absolute;
-    margin-left: 158px;
+    margin-left: 113px;
     padding-left: 10px;
     margin-top: 65px;
     width: 225px;
@@ -299,6 +299,11 @@
     .crafting-sim-meal-dropdown-button {
         margin-left: 45px;
     }
+    
+    .crafting-sim-meal-dropdown-content {
+        margin-left: 158px;
+    }
+
 
     .crafting-sim-meal-text {
         margin-right: 20%;
