@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import CrafterSim from '../../code/craftingSim.js'
 const debug = 0;
 
+const simRuns = 1000;
+
 class CraftStats extends React.Component {
 
   constructor(props) {
@@ -23,6 +25,7 @@ class CraftStats extends React.Component {
       craftSim: craftSimTemp,
       macroResults: [],
       maxQuality: 0,
+      failureRate: 0,
       mean: 0,
       stdDev: 0
     };
@@ -123,12 +126,15 @@ class CraftStats extends React.Component {
   simulateMacro  = () => {
     if (debug) console.log(this.props.macro);
     if (debug) this.state.craftSim.printCrafter();
-
+    let successes = 0;
+    let HQ = 0;
     let macroResultsTemp = [];
     if (this.props.macro !== []) {
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 0; i < simRuns; i++) {
         let result = this.state.craftSim.executeMacro(this.props.macro, true, false)
-        // if (debug) console.log(result);
+        if (result.returnState === 4) successes++;
+        if (result.quality >= result.recipeQuality) HQ++;
+
         macroResultsTemp.push((result.returnState === 4) ? result.quality : 0);
       }
     }
@@ -136,6 +142,7 @@ class CraftStats extends React.Component {
     
     macroResultsTemp.sort((a, b) => a - b);
     const mean = (macroResultsTemp.reduce((sum, a) => sum + a.quality, 0) / macroResultsTemp.length);
+
     // console.log(mean)
     // let summation = 0;
     // for (const result in macroResultsTemp) {
@@ -149,7 +156,9 @@ class CraftStats extends React.Component {
     // console.log(tempMaxQuality, stdDev)
 
     this.setState( { macroResults: macroResultsTemp, 
-      mean: mean},
+      mean: mean,
+      failureRate: ((successes/simRuns) * 100) - 100,
+      HQRate: (HQ / simRuns) * 100},
       this.drawMacroResults);
   }
 
@@ -176,15 +185,10 @@ class CraftStats extends React.Component {
       
       // Populate whisker box math
       const failureLabel = document.querySelector('.craftstats-container-recipe-failure-rate');
-      failureLabel.innerHTML = ('<h3>Failure Rate: ' + 0 + '</h3>');
+      failureLabel.innerHTML = ('<h3>Failure Rate: ' + this.state.failureRate.toFixed(2) + '%</h3>');
 
-      let count = 0;
-      this.state.macroResults.forEach(result => { 
-        (result >= this.state.craftSim.recipeQuality) ? count++ : count += 0;  
-      })
-      let HQRate = (count / this.state.macroResults.length) * 100
       const HQLabel = document.querySelector('.craftstats-container-recipe-HQ-rate');
-      HQLabel.innerHTML = ('<h3>HQ Rate: ' + HQRate + '%</h3>');
+      HQLabel.innerHTML = ('<h3>HQ Rate: ' + this.state.HQRate.toFixed(2) + '%</h3>');
 
 
       // Perform whisker box math
