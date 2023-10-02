@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import './crafteractions.css';
-import { addMacroAction } from '../../context/index'
+import { addMacroAction } from '../../context/index';
+import { ActionTooltip } from '../../classes/ActionTooltip';
 const debug = 0;
 
 
@@ -47,7 +48,11 @@ function CrafterActions(props) {
             {craftActions
               .sort(orderingFunction)
               .filter(({ Description }) => Description.search('progress') !== -1)
-              .map(({ Name }) => <img key={Name} src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => addAction(Name)} />)}
+              .map(({ Name, Cost, Description }) => 
+                <ActionTooltip className='crafting-sim-action-tooltip' Skill={Name} Description={Description}>
+                  <img key={Name} data={Name} src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => addAction(Name)} />
+                </ActionTooltip>
+                )}
           </div>
         </div>
 
@@ -57,7 +62,11 @@ function CrafterActions(props) {
             {craftActions
               .sort(orderingFunction)
               .filter(({ Description }) => Description.search('quality') !== -1)
-              .map(({ Name }) => <img key={Name} src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => addAction(Name)} />)}
+              .map(({ Name, Cost, Description }) => 
+                <ActionTooltip className='crafting-sim-action-tooltip' Skill={Name} Description={Description}>
+                  <img className='crafting-sim-action-img' key={Name}  src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => addAction(Name)} />
+                </ActionTooltip>
+              )}
           </div>
         </div>
 
@@ -67,7 +76,11 @@ function CrafterActions(props) {
             {craftActions
               .sort(orderingFunction)
               .filter(({ Description }) => (Description.search('progress') === -1 && Description.search('quality') === -1))
-              .map(({ Name }) => <img key={Name} src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => addAction(Name)} />)}
+              .map(({ Name, Cost, Description }) => 
+              <ActionTooltip className='crafting-sim-action-tooltip' Skill={Name} CP={Cost} Description={Description}>
+                <img key={Name}  src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => addAction(Name)} />
+              </ActionTooltip>
+            )}
           </div>
 
         </div>
