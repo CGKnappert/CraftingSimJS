@@ -7,6 +7,7 @@ const initialState = {
   recipe: "",
   macro: [],
   simulatedMacro: [],
+  executedMacro: [],
   Level: 90,
   Craftsmanship: 2000,
   Control: 2000,

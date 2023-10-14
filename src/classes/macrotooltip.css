@@ -1,0 +1,44 @@
+.macro-tooltip-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 2.5%;
+}
+
+.macro-tooltip-inner {
+    position: absolute;
+    display: block;
+
+    padding: 5px;
+
+    border: solid;
+    border-width: 4px;
+    border-color: black;
+    border-radius: 8px;
+    background: var(--global-grey);
+    color: white;
+    --scale: 1;
+
+    bottom: calc(105%);
+    width: 300px;
+    max-height: 200px;
+    z-index: 9;
+}
+
+.macro-tooltip-left {
+    float: left;
+}
+
+.macro-tooltip-right {
+    float: right;
+}
+
+.macro-tooltip-skill {
+    display: block;
+    font-size: medium;
+    margin-bottom: 10px;
+}
+
+.macro-tooltip-description {
+    /* display: block; */
+    font-size: small;
+}

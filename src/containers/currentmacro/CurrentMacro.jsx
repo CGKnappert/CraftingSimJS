@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './currentmacro.css';
 import { removeMacroAction, setMacro } from '../../context/index'
 import { connect } from 'react-redux';
+import { MacroTooltip } from '../../classes/MacroTooltip';
+
 const debug = 1;
 
 class CurrentMacro extends Component {
@@ -11,8 +13,22 @@ class CurrentMacro extends Component {
         this.state = {
             showExport: false,
             showImport: false,
-            macroString: ""
+            macroString: "",
+            currMacro: [],
+            macroResults: {},
+            executedMacro: []        
         }
+    }
+
+    componentDidUpdate = () => {
+        if (this.state.macro !== this.state.currMacro) {
+
+            this.setState({
+                macro: this.state.currMacro,
+
+            })
+        }
+        console.log(this.props.executedMacro);
     }
 
     removeAction = (event) => {
@@ -109,7 +125,11 @@ class CurrentMacro extends Component {
                 <div className="crafting-sim-macro-actions">
                     {this.props.macro !== undefined &&
                         this.props.macro
-                            .map((Name, index, arr) => <img key={index} src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => this.removeAction(index)} />)}
+                            .map((Name, index, endingCP) => 
+                    <MacroTooltip className='crafting-sim-action-tooltip' Skill={Name} CP={endingCP} CPDelta={0} Durability={0} DurabilityDelta={1} Quality={0} QualityDelta={0} Progress={0} ProgressDelta={0}> 
+                        <img key={index} src={require(`../../assets/Action Icons/${Name}.png`)} title={Name} alt={Name} onClick={e => this.removeAction(index)} />
+                    </MacroTooltip>
+                    )}
                 </div>
             </div >
         )
@@ -118,7 +138,8 @@ class CurrentMacro extends Component {
 
 const mapStateToFunction = state => {
     return {
-        macro: state.macro
+        macro: state.macro,
+        executedMacro: state.executedMacro
     }
 }
 

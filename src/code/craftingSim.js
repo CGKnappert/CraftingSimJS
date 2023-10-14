@@ -345,7 +345,16 @@ class CrafterSim {
     }
 
 
-    executeStep(prevAction, action, condition, simulateConditions) {
+    executeStep(prevAction, action, condition, simulateConditions, executedMacro) {
+        // Variables to store starting point and delta. Used for storing this step's changes, to be displayed on the tooltips of the currectMacro
+        var stepProgress = 0;
+        var stepQuality = 0;
+        var stepCP = 0;
+        var stepDurability = 0;
+        var endingProgress = this.progress;
+        var endingQuality = this.quality;
+        var endingCP = this.CP;
+        var endingDurability = this.durability;
         // Exit early if invalid action
         if (prevAction && action === "Reflect") return 0;
         if (prevAction && action === "Muscel Memory") return 0;
@@ -399,28 +408,28 @@ class CrafterSim {
         if (this.CP < ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2))) { return 1; }
         // decrease current CP amount by action cost
         if (debug) console.log("Spent " + String((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2)) + " CP")
-        this.CP -= ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2));
+        stepCP -= ((condition !== "pliant") ? CPCost : Math.ceil(CPCost / 2));
 
         // Calculate action progress or quality changes
         if (this.clvl >= this.rlvl && craftSuccess) {
-            this.progress += Math.floor((Math.floor(((this.craftsmanship * 10) / this.progressDivider) + 2) * Math.floor(actionProgressEfficiency) / 100) * progressMultiplier);
+            stepProgress = Math.floor((Math.floor(((this.craftsmanship * 10) / this.progressDivider) + 2) * Math.floor(actionProgressEfficiency) / 100) * progressMultiplier);
             if (debug) console.log(this.progress);
-            this.quality += Math.floor((Math.floor(((this.control * 10) / this.qualityDivider) + 35) * (actionQualityEfficiency * qualityEfficiencyMultiplier * conditonMultiplier) / 100) * qualityMultiplier);
+            stepQuality = Math.floor((Math.floor(((this.control * 10) / this.qualityDivider) + 35) * (actionQualityEfficiency * qualityEfficiencyMultiplier * conditonMultiplier) / 100) * qualityMultiplier);
             if (debug) console.log(this.quality);
         }
         //TODO: Else for underleveled
 
         // decrease durability while considering waste not
         if ((this.activeBuffs["Waste Not"] === undefined && this.activeBuffs["Waste Not II"] === undefined)) {
-            this.durability -= Math.floor(actionType.durability);
+            stepDurability -= Math.floor(actionType.durability);
         }
         else {
-            this.durability -= Math.floor(Math.ceil(Math.floor(actionType.durability) / 10)) * 5;
+            stepDurability -= Math.floor(Math.ceil(Math.floor(actionType.durability) / 10)) * 5;
         }
 
         // Add durability if Master's Mend
         if (actionType.name === "Master's Mend") {
-            this.durability += 30;
+            stepDurability += 30;
         }
         
         //Remove any buffs consumed this step
@@ -438,9 +447,7 @@ class CrafterSim {
 
         //Evaluate buffs
         //TODO: observe combo action
-        if (this.activeBuffs["Manipulation"] > 0) this.durability += 5;
-        //Don't let durability overcap
-        if (this.durability > this.recipeDurability) this.durability = this.recipeDurability;
+        if (this.activeBuffs["Manipulation"] > 0) stepDurability += 5;
 
         //Add any new buffs executed this step
         if ((this.actionDict[action].buff && this.activeBuffs[action] !== undefined) || action === "Muscle Memory") this.activeBuffs[action] = actionType.steps;
@@ -454,7 +461,34 @@ class CrafterSim {
         if (!prevAction && actionType.name === "Reflect") this.activeBuffs["Inner Quiet"] = 3;
         if (this.activeBuffs["Inner Quiet"] >= 0 && this.activeBuffs["Inner Quiet"] > 10) this.activeBuffs["Inner Quiet"] = 10; //Cap Inner Quiet at 10
 
+        
+        this.durability += stepDurability;
+        //Don't let durability overcap
+        if (this.durability > this.recipeDurability) this.durability = this.recipeDurability;
+        endingDurability = this.durability;
+
+        this.CP += stepCP;
+        endingCP = this.CP;
+
+        this.progress += stepProgress;
+        endingProgress = this.progress;
+
+        this.quality += stepQuality;
+        endingQuality = this.quality;
+
         // this.printStatus(action, condition);
+
+        executedMacro.push({
+            Name: action,
+            stepProgress: stepProgress,
+            stepQuality: stepQuality,
+            stepCP: stepCP,
+            stepDurability: stepDurability,
+            endingProgress: endingProgress,
+            endingQuality: endingQuality,
+            endingCP: endingCP,
+            endingDurability: endingDurability
+        })
     }
 
     executeMacro(macro, simulateConditions, expert) {
@@ -466,6 +500,7 @@ class CrafterSim {
         this.progress = 0;
         this.quality = this.startingQuality;
         var condition = "normal";
+        var executedMacro = [];
 
         if (!macro.length > 0) {
             return {
@@ -483,7 +518,7 @@ class CrafterSim {
         }
 
         while (this.durability > 0 && this.progress < this.difficulty && step < macro.length) {
-            let stepEnum = this.executeStep(macro[step - 1], macro[step], condition, simulateConditions);
+            let stepEnum = this.executeStep(macro[step - 1], macro[step], condition, simulateConditions, executedMacro);
             if (simulateConditions && !expert) {
                 const rand = Math.floor(Math.random() * (100 - 1) + 1);
                 if (rand <= 10) condition = "poor"; //10% chance of poor
@@ -514,7 +549,8 @@ class CrafterSim {
                     recipeQuality: this.recipeQuality,
                     currCP: this.CP,
                     recipe: this.recipeName,
-                    macro: macro
+                    macro: macro,
+                    executedMacro: executedMacro
                 })
                 return {
                     returnState: 1,
@@ -526,13 +562,15 @@ class CrafterSim {
                     recipeQuality: this.recipeQuality,
                     currCP: this.CP,
                     recipe: this.recipeName,
-                    macro: macro
+                    macro: macro,
+                    executedMacro: executedMacro
                 };
             }
             step += 1;
         }
         // TODO: Simplifiy
         if (this.progress >= this.difficulty) {
+            // executedMacro.append(macro[step:macro.length])  state.macro.slice(action.position + 1)
             if (debug) console.log("Craft Complete! with " + this.quality + " quality.");
             if (debug) console.log({
                 returnState: 4,
@@ -545,6 +583,7 @@ class CrafterSim {
                 currCP: this.CP,
                 recipe: this.recipeName,
                 macro: macro,
+                executedMacro: executedMacro,
                 finishingStep: step
             })
             return {
@@ -558,6 +597,7 @@ class CrafterSim {
                 currCP: this.CP,
                 recipe: this.recipeName,
                 macro: macro,
+                executedMacro: executedMacro,
                 finishingStep: step
             };
         }
@@ -573,7 +613,8 @@ class CrafterSim {
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP,
                 recipe: this.recipeName,
-                macro: macro
+                macro: macro,
+                executedMacro: executedMacro
             })
             return {
                 returnState: 2,
@@ -585,7 +626,8 @@ class CrafterSim {
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP,
                 recipe: this.recipeName,
-                macro: macro
+                macro: macro,
+                executedMacro: executedMacro
             };
         }
         else {
@@ -600,7 +642,8 @@ class CrafterSim {
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP,
                 recipe: this.recipeName,
-                macro: macro
+                macro: macro,
+                executedMacro: executedMacro
             })
 
             return {
@@ -613,7 +656,8 @@ class CrafterSim {
                 recipeQuality: this.recipeQuality,
                 currCP: this.CP,
                 recipe: this.recipeName,
-                macro: macro
+                macro: macro,
+                executedMacro: executedMacro
             };
         }
     }

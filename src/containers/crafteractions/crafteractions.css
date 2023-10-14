@@ -123,8 +123,8 @@
     }
     
     .crafting-sim-actions img {
-        height: 5.5%;
-        width: 5.5%;
+        height: 55px;
+        width: 55px;
     }
 }
 
@@ -134,8 +134,8 @@
     }
     
     .crafting-sim-actions img {
-        height: 6.5%;
-        width: 6.5%;
+        height: 65px;
+        width: 65px;
     }
 }
 
@@ -145,7 +145,7 @@
     }
     
     .crafting-sim-actions img {
-        height: 60px;
-        width: 60px;
+        height: 70px;
+        width: 70px;
     }
 }
